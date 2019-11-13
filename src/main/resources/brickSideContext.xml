@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-lazy-init="true">
+
+	<bean id="brickWO" class="cube.BrickSide">
+		<constructor-arg value="w" name="color1" />
+		<constructor-arg value="o" name="color2" />
+	</bean>
+
+	<bean id="brickWB" class="cube.BrickSide">
+		<constructor-arg value="w" name="color1" />
+		<constructor-arg value="b" name="color2" />
+	</bean>
+
+	<bean id="brickWR" class="cube.BrickSide">
+		<constructor-arg value="w" name="color1" />
+		<constructor-arg value="r" name="color2" />
+	</bean>
+
+	<bean id="brickWG" class="cube.BrickSide">
+		<constructor-arg value="w" name="color1" />
+		<constructor-arg value="g" name="color2" />
+	</bean>
+
+	<bean id="brickYO" class="cube.BrickSide">
+		<constructor-arg value="y" name="color1" />
+		<constructor-arg value="o" name="color2" />
+	</bean>
+
+	<bean id="brickYG" class="cube.BrickSide">
+		<constructor-arg value="y" name="color1" />
+		<constructor-arg value="g" name="color2" />
+	</bean>
+
+	<bean id="brickYR" class="cube.BrickSide">
+		<constructor-arg value="y" name="color1" />
+		<constructor-arg value="r" name="color2" />
+	</bean>
+
+	<bean id="brickYB" class="cube.BrickSide">
+		<constructor-arg value="y" name="color1" />
+		<constructor-arg value="b" name="color2" />
+	</bean>
+
+	<bean id="brickGO" class="cube.BrickSide">
+		<constructor-arg value="g" name="color1" />
+		<constructor-arg value="o" name="color2" />
+	</bean>
+
+	<bean id="brickGR" class="cube.BrickSide">
+		<constructor-arg value="g" name="color1" />
+		<constructor-arg value="r" name="color2" />
+	</bean>
+
+	<bean id="brickBO" class="cube.BrickSide">
+		<constructor-arg value="b" name="color1" />
+		<constructor-arg value="o" name="color2" />
+	</bean>
+
+	<bean id="brickBR" class="cube.BrickSide">
+		<constructor-arg value="b" name="color1" />
+		<constructor-arg value="r" name="color2" />
+	</bean>
+
+</beans>

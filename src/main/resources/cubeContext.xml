@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-lazy-init="true">
+
+	<import resource="sideContext.xml" />
+
+<!-- 	<bean id="cube" class="cube.Cube" scope="prototype"> -->
+<!-- 		<constructor-arg ref="sideW" name="side1" /> -->
+<!-- 		<constructor-arg ref="sideR" name="side2" /> -->
+<!-- 		<constructor-arg ref="sideG" name="side3" /> -->
+<!-- 		<constructor-arg ref="sideO" name="side4" /> -->
+<!-- 		<constructor-arg ref="sideB" name="side5" /> -->
+<!-- 		<constructor-arg ref="sideY" name="side6" /> -->
+<!-- 	</bean> -->
+
+<!-- 	<bean id="cubeController" class="cube.CubeController" scope="prototype"> -->
+<!-- 		<constructor-arg ref="cube" name="cube" /> -->
+<!-- 	</bean> -->
+</beans>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-lazy-init="true">
+
+	<bean id="brickW" class="cube.BrickCenter">
+		<constructor-arg value="w" name="color1" />
+	</bean>
+
+	<bean id="brickR" class="cube.BrickCenter">
+		<constructor-arg value="r" name="color1" />
+	</bean>
+
+	<bean id="brickG" class="cube.BrickCenter">
+		<constructor-arg value="g" name="color1" />
+	</bean>
+
+	<bean id="brickO" class="cube.BrickCenter">
+		<constructor-arg value="o" name="color1" />
+	</bean>
+
+	<bean id="brickB" class="cube.BrickCenter">
+		<constructor-arg value="b" name="color1" />
+	</bean>
+
+	<bean id="brickY" class="cube.BrickCenter">
+		<constructor-arg value="y" name="color1" />
+	</bean>
+
+</beans>

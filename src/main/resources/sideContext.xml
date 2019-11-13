@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-lazy-init="true">
+
+	<import resource="brickAngleContext.xml" />
+	<import resource="brickSideContext.xml" />
+	<import resource="brickCenterContext.xml" />
+
+	<bean id="side" class="cube.Side" scope="prototype" />
+
+	<bean id="sideW" class="cube.Side" scope="prototype">
+		<constructor-arg ref="brickWGO" name="brickAngle1" />
+		<constructor-arg ref="brickWOB" name="brickAngle2" />
+		<constructor-arg ref="brickWBR" name="brickAngle3" />
+		<constructor-arg ref="brickWRG" name="brickAngle4" />
+		<constructor-arg ref="brickWO" name="brickSide1" />
+		<constructor-arg ref="brickWB" name="brickSide2" />
+		<constructor-arg ref="brickWR" name="brickSide3" />
+		<constructor-arg ref="brickWG" name="brickSide4" />
+		<constructor-arg ref="brickW" name="brickCenter" />
+		<constructor-arg name="brickColor">
+			<list value-type="int">
+				<value>1</value>
+				<value>1</value>
+				<value>1</value>
+				<value>1</value>
+				<value>1</value>
+				<value>1</value>
+				<value>1</value>
+				<value>1</value>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="sideR" class="cube.Side" scope="prototype">
+		<constructor-arg ref="brickWRG" name="brickAngle1" />
+		<constructor-arg ref="brickWBR" name="brickAngle2" />
+		<constructor-arg ref="brickYRB" name="brickAngle3" />
+		<constructor-arg ref="brickYGR" name="brickAngle4" />
+		<constructor-arg ref="brickWR" name="brickSide1" />
+		<constructor-arg ref="brickBR" name="brickSide2" />
+		<constructor-arg ref="brickYR" name="brickSide3" />
+		<constructor-arg ref="brickGR" name="brickSide4" />
+		<constructor-arg ref="brickR" name="brickCenter" />
+		<constructor-arg name="brickColor">
+			<list value-type="int">
+				<value>2</value>
+				<value>3</value>
+				<value>2</value>
+				<value>3</value>
+				<value>2</value>
+				<value>2</value>
+				<value>2</value>
+				<value>2</value>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="sideG" class="cube.Side" scope="prototype">
+		<constructor-arg ref="brickYOG" name="brickAngle1" />
+		<constructor-arg ref="brickWGO" name="brickAngle2" />
+		<constructor-arg ref="brickWRG" name="brickAngle3" />
+		<constructor-arg ref="brickYGR" name="brickAngle4" />
+		<constructor-arg ref="brickGO" name="brickSide1" />
+		<constructor-arg ref="brickWG" name="brickSide2" />
+		<constructor-arg ref="brickGR" name="brickSide3" />
+		<constructor-arg ref="brickYG" name="brickSide4" />
+		<constructor-arg ref="brickG" name="brickCenter" />
+		<constructor-arg name="brickColor">
+			<list value-type="int">
+				<value>3</value>
+				<value>2</value>
+				<value>3</value>
+				<value>2</value>
+				<value>1</value>
+				<value>2</value>
+				<value>1</value>
+				<value>2</value>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="sideO" class="cube.Side" scope="prototype">
+		<constructor-arg ref="brickYOG" name="brickAngle1" />
+		<constructor-arg ref="brickYBO" name="brickAngle2" />
+		<constructor-arg ref="brickWOB" name="brickAngle3" />
+		<constructor-arg ref="brickWGO" name="brickAngle4" />
+		<constructor-arg ref="brickYO" name="brickSide1" />
+		<constructor-arg ref="brickBO" name="brickSide2" />
+		<constructor-arg ref="brickWO" name="brickSide3" />
+		<constructor-arg ref="brickGO" name="brickSide4" />
+		<constructor-arg ref="brickO" name="brickCenter" />
+		<constructor-arg name="brickColor">
+			<list value-type="int">
+				<value>2</value>
+				<value>3</value>
+				<value>2</value>
+				<value>3</value>
+				<value>2</value>
+				<value>2</value>
+				<value>2</value>
+				<value>2</value>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="sideB" class="cube.Side" scope="prototype">
+		<constructor-arg ref="brickWOB" name="brickAngle1" />
+		<constructor-arg ref="brickYBO" name="brickAngle2" />
+		<constructor-arg ref="brickYRB" name="brickAngle3" />
+		<constructor-arg ref="brickWBR" name="brickAngle4" />
+		<constructor-arg ref="brickBO" name="brickSide1" />
+		<constructor-arg ref="brickYB" name="brickSide2" />
+		<constructor-arg ref="brickBR" name="brickSide3" />
+		<constructor-arg ref="brickWB" name="brickSide4" />
+		<constructor-arg ref="brickB" name="brickCenter" />
+		<constructor-arg name="brickColor">
+			<list value-type="int">
+				<value>3</value>
+				<value>2</value>
+				<value>3</value>
+				<value>2</value>
+				<value>1</value>
+				<value>2</value>
+				<value>1</value>
+				<value>2</value>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="sideY" class="cube.Side" scope="prototype">
+		<constructor-arg ref="brickYBO" name="brickAngle1" />
+		<constructor-arg ref="brickYOG" name="brickAngle2" />
+		<constructor-arg ref="brickYGR" name="brickAngle3" />
+		<constructor-arg ref="brickYRB" name="brickAngle4" />
+		<constructor-arg ref="brickYO" name="brickSide1" />
+		<constructor-arg ref="brickYG" name="brickSide2" />
+		<constructor-arg ref="brickYR" name="brickSide3" />
+		<constructor-arg ref="brickYB" name="brickSide4" />
+		<constructor-arg ref="brickY" name="brickCenter" />
+		<constructor-arg name="brickColor">
+			<list value-type="int">
+				<value>1</value>
+				<value>1</value>
+				<value>1</value>
+				<value>1</value>
+				<value>1</value>
+				<value>1</value>
+				<value>1</value>
+				<value>1</value>
+			</list>
+		</constructor-arg>
+	</bean>
+</beans>
