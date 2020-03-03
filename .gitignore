@@ -1,0 +1,6 @@
+.*
+target/
+*.jar
+*.zip
+!.gitignore
+!Release/Rubick.jar
