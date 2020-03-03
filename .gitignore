@@ -2,5 +2,6 @@
 target/
 *.jar
 *.zip
+/bin
 !.gitignore
 !Release/Rubick.jar
