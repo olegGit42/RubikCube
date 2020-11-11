@@ -1,6 +1,9 @@
 package cube;
 
-import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -8,7 +11,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import lombok.Data;
-import rubick.Rubick.RubickMain;
 
 @Data
 @Component
@@ -16,7 +18,81 @@ import rubick.Rubick.RubickMain;
 public class CubeController {
 
 	@Autowired
-	Cube cube;
+	private Cube cube;
+	public static Map<String, Rotate> rotationMapping;
+
+	{
+		rotationMapping = new HashMap<>();
+		updateRotationMapping();
+	}
+
+	private void updateRotationMapping() {
+		rotationMapping.put("R", this::R);
+		rotationMapping.put("R'", this::Rr);
+		rotationMapping.put("R2", this::R2);
+		rotationMapping.put("Rw", this::Rw);
+		rotationMapping.put("Rw'", this::Rwr);
+		rotationMapping.put("Rw2", this::Rw2);
+
+		rotationMapping.put("L", this::L);
+		rotationMapping.put("L'", this::Lr);
+		rotationMapping.put("L2", this::L2);
+		rotationMapping.put("Lw", this::Lw);
+		rotationMapping.put("Lw'", this::Lwr);
+		rotationMapping.put("Lw2", this::Lw2);
+
+		rotationMapping.put("U", this::U);
+		rotationMapping.put("U'", this::Ur);
+		rotationMapping.put("U2", this::U2);
+		rotationMapping.put("Uw", this::Uw);
+		rotationMapping.put("Uw'", this::Uwr);
+		rotationMapping.put("Uw2", this::Uw2);
+
+		rotationMapping.put("D", this::D);
+		rotationMapping.put("D'", this::Dr);
+		rotationMapping.put("D2", this::D2);
+		rotationMapping.put("Dw", this::Dw);
+		rotationMapping.put("Dw'", this::Dwr);
+		rotationMapping.put("Dw2", this::Dw2);
+
+		rotationMapping.put("F", this::F);
+		rotationMapping.put("F'", this::Fr);
+		rotationMapping.put("F2", this::F2);
+		rotationMapping.put("Fw", this::Fw);
+		rotationMapping.put("Fw'", this::Fwr);
+		rotationMapping.put("Fw2", this::Fw2);
+
+		rotationMapping.put("B", this::B);
+		rotationMapping.put("B'", this::Br);
+		rotationMapping.put("B2", this::B2);
+		rotationMapping.put("Bw", this::Bw);
+		rotationMapping.put("Bw'", this::Bwr);
+		rotationMapping.put("Bw2", this::Bw2);
+
+		rotationMapping.put("M", this::M);
+		rotationMapping.put("M'", this::Mr);
+		rotationMapping.put("M2", this::M2);
+
+		rotationMapping.put("S", this::S);
+		rotationMapping.put("S'", this::Sr);
+		rotationMapping.put("S2", this::S2);
+
+		rotationMapping.put("E", this::E);
+		rotationMapping.put("E'", this::Er);
+		rotationMapping.put("E2", this::E2);
+
+		rotationMapping.put("x", this::X);
+		rotationMapping.put("x'", this::Xr);
+		rotationMapping.put("x2", this::X2);
+
+		rotationMapping.put("y", this::Y);
+		rotationMapping.put("y'", this::Yr);
+		rotationMapping.put("y2", this::Y2);
+
+		rotationMapping.put("z", this::Z);
+		rotationMapping.put("z'", this::Zr);
+		rotationMapping.put("z2", this::Z2);
+	}
 
 	public CubeController() {
 	}
@@ -25,23 +101,203 @@ public class CubeController {
 		this.cube = cube;
 	}
 
+	public static CubeController getNewInstance() {
+		return new CubeController();
+	}
+
+	public static CubeController getNewInstance(Cube cube) {
+		return new CubeController(cube);
+	}
+
+	public boolean doAlgorithm(List<String> algorithmList) {
+		updateRotationMapping();
+		try {
+			algorithmList.forEach(rotation -> rotationMapping.get(rotation).rotate());
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean doAlgorithm(String[] algorithmArray) {
+		updateRotationMapping();
+		try {
+			for (String rotation : algorithmArray) {
+				rotationMapping.get(rotation).rotate();
+			}
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public boolean doAlgorithm(String rotation) {
+		updateRotationMapping();
+		try {
+			rotationMapping.get(rotation).rotate();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public void resetCube() {
+
+		cube.getSideDown().setSideColor(Brick.Color.WHITE);
+		cube.getSideUp().setSideColor(Brick.Color.YELLOW);
+		cube.getSideFront().setSideColor(Brick.Color.RED);
+		cube.getSideBack().setSideColor(Brick.Color.ORANGE);
+		cube.getSideLeft().setSideColor(Brick.Color.BLUE);
+		cube.getSideRight().setSideColor(Brick.Color.GREEN);
+
+		// resetForTest();
+	}
+
+	public void resetForTest() {
+		Side d = cube.getSideDown();
+		Side u = cube.getSideUp();
+		Side f = cube.getSideFront();
+		Side b = cube.getSideBack();
+		Side l = cube.getSideLeft();
+		Side r = cube.getSideRight();
+
+		d.changeBrickColor(1, Brick.Color.YELLOW);
+		d.changeBrickColor(2, Brick.Color.GREEN);
+		d.changeBrickColor(3, Brick.Color.ORANGE);
+		d.changeBrickColor(4, Brick.Color.YELLOW);
+		d.changeBrickColor(5, Brick.Color.GREEN);
+		d.changeBrickColor(6, Brick.Color.RED);
+		d.changeBrickColor(7, Brick.Color.GREEN);
+		d.changeBrickColor(8, Brick.Color.YELLOW);
+		d.changeBrickColor(9, Brick.Color.BLUE);
+
+		u.changeBrickColor(1, Brick.Color.WHITE);
+		u.changeBrickColor(2, Brick.Color.RED);
+		u.changeBrickColor(3, Brick.Color.YELLOW);
+		u.changeBrickColor(4, Brick.Color.YELLOW);
+		u.changeBrickColor(5, Brick.Color.BLUE);
+		u.changeBrickColor(6, Brick.Color.BLUE);
+		u.changeBrickColor(7, Brick.Color.YELLOW);
+		u.changeBrickColor(8, Brick.Color.WHITE);
+		u.changeBrickColor(9, Brick.Color.ORANGE);
+
+		f.changeBrickColor(1, Brick.Color.BLUE);
+		f.changeBrickColor(2, Brick.Color.GREEN);
+		f.changeBrickColor(3, Brick.Color.WHITE);
+		f.changeBrickColor(4, Brick.Color.YELLOW);
+		f.changeBrickColor(5, Brick.Color.YELLOW);
+		f.changeBrickColor(6, Brick.Color.WHITE);
+		f.changeBrickColor(7, Brick.Color.BLUE);
+		f.changeBrickColor(8, Brick.Color.ORANGE);
+		f.changeBrickColor(9, Brick.Color.WHITE);
+
+		b.changeBrickColor(1, Brick.Color.GREEN);
+		b.changeBrickColor(2, Brick.Color.BLUE);
+		b.changeBrickColor(3, Brick.Color.GREEN);
+		b.changeBrickColor(4, Brick.Color.WHITE);
+		b.changeBrickColor(5, Brick.Color.WHITE);
+		b.changeBrickColor(6, Brick.Color.WHITE);
+		b.changeBrickColor(7, Brick.Color.WHITE);
+		b.changeBrickColor(8, Brick.Color.BLUE);
+		b.changeBrickColor(9, Brick.Color.YELLOW);
+
+		l.changeBrickColor(1, Brick.Color.RED);
+		l.changeBrickColor(2, Brick.Color.ORANGE);
+		l.changeBrickColor(3, Brick.Color.ORANGE);
+		l.changeBrickColor(4, Brick.Color.RED);
+		l.changeBrickColor(5, Brick.Color.RED);
+		l.changeBrickColor(6, Brick.Color.GREEN);
+		l.changeBrickColor(7, Brick.Color.ORANGE);
+		l.changeBrickColor(8, Brick.Color.RED);
+		l.changeBrickColor(9, Brick.Color.RED);
+
+		r.changeBrickColor(1, Brick.Color.BLUE);
+		r.changeBrickColor(2, Brick.Color.ORANGE);
+		r.changeBrickColor(3, Brick.Color.RED);
+		r.changeBrickColor(4, Brick.Color.BLUE);
+		r.changeBrickColor(5, Brick.Color.ORANGE);
+		r.changeBrickColor(6, Brick.Color.ORANGE);
+		r.changeBrickColor(7, Brick.Color.GREEN);
+		r.changeBrickColor(8, Brick.Color.GREEN);
+		r.changeBrickColor(9, Brick.Color.RED);
+
+		/*
+		 * d.changeBrickColor(1, Brick.Color.); d.changeBrickColor(2, Brick.Color.);
+		 * d.changeBrickColor(3, Brick.Color.); d.changeBrickColor(4, Brick.Color.);
+		 * d.changeBrickColor(5, Brick.Color.); d.changeBrickColor(6, Brick.Color.);
+		 * d.changeBrickColor(7, Brick.Color.); d.changeBrickColor(8, Brick.Color.);
+		 * d.changeBrickColor(9, Brick.Color.);
+		 * 
+		 * u.changeBrickColor(1, Brick.Color.); u.changeBrickColor(2, Brick.Color.);
+		 * u.changeBrickColor(3, Brick.Color.); u.changeBrickColor(4, Brick.Color.);
+		 * u.changeBrickColor(5, Brick.Color.); u.changeBrickColor(6, Brick.Color.);
+		 * u.changeBrickColor(7, Brick.Color.); u.changeBrickColor(8, Brick.Color.);
+		 * u.changeBrickColor(9, Brick.Color.);
+		 * 
+		 * f.changeBrickColor(1, Brick.Color.); f.changeBrickColor(2,Brick.Color. );
+		 * f.changeBrickColor(3, Brick.Color.); f.changeBrickColor(4, Brick.Color.);
+		 * f.changeBrickColor(5, Brick.Color.); f.changeBrickColor(6, Brick.Color.);
+		 * f.changeBrickColor(7, Brick.Color.); f.changeBrickColor(8, Brick.Color.);
+		 * f.changeBrickColor(9, Brick.Color.);
+		 * 
+		 * b.changeBrickColor(1, Brick.Color.); b.changeBrickColor(2, Brick.Color.);
+		 * b.changeBrickColor(3, Brick.Color.); b.changeBrickColor(4, Brick.Color.);
+		 * b.changeBrickColor(5, Brick.Color.); b.changeBrickColor(6, Brick.Color.);
+		 * b.changeBrickColor(7, Brick.Color.); b.changeBrickColor(8, Brick.Color.);
+		 * b.changeBrickColor(9, Brick.Color.);
+		 * 
+		 * l.changeBrickColor(1, Brick.Color.); l.changeBrickColor(2, Brick.Color.);
+		 * l.changeBrickColor(3, Brick.Color.); l.changeBrickColor(4, Brick.Color.);
+		 * l.changeBrickColor(5, Brick.Color.); l.changeBrickColor(6, Brick.Color.);
+		 * l.changeBrickColor(7, Brick.Color.); l.changeBrickColor(8, Brick.Color.);
+		 * l.changeBrickColor(9, Brick.Color.);
+		 * 
+		 * r.changeBrickColor(1, Brick.Color.); r.changeBrickColor(2, Brick.Color.);
+		 * r.changeBrickColor(3, Brick.Color.); r.changeBrickColor(4, Brick.Color.);
+		 * r.changeBrickColor(5, Brick.Color.); r.changeBrickColor(6, Brick.Color.);
+		 * r.changeBrickColor(7, Brick.Color.); r.changeBrickColor(8, Brick.Color.);
+		 */
+
+	}
+
 	public boolean cubeCompleted() throws IllegalArgumentException, IllegalAccessException {
 
-		for (Field side : Cube.class.getDeclaredFields()) {
-			if (!sideCompleted((Side) side.get(cube))) {
-				return false;
-			}
-		}
+		/*
+		 * for (Field side : Cube.class.getDeclaredFields()) { if (!sideCompleted((Side)
+		 * side.get(cube))) { return false; } }
+		 */
+
+		if (!sideCompleted(cube.getSideBack()) || !sideCompleted(cube.getSideDown()) || !sideCompleted(cube.getSideFront())
+				|| !sideCompleted(cube.getSideLeft()) || !sideCompleted(cube.getSideRight()) || !sideCompleted(cube.getSideUp()))
+			return false;
+
 		return true;
 	}
 
-	public Cube completeCube() {
-		cube = RubickMain.appContext.getBean("cube", Cube.class);
-		return cube;
+	// TODO completeCube()
+	public List<String> completeCube() {
+		/*
+		 * cube = RubickMain.appContext.getBean("cube", Cube.class); X(); Z2();
+		 */
+
+		List<String> solveAlgorithm = null;
+
+		try {
+			solveAlgorithm = Solver.getNewInstance(cube).solve();
+			// solveAlgorithm = Solver.getNewInstance(cube).solveCross();
+			// solveAlgorithm = Solver.getNewInstance(cube).solveF2L();
+			doAlgorithm(solveAlgorithm);
+		} catch (CannotSolveException e) {
+			e.printStackTrace();
+			solveAlgorithm = new ArrayList<>();
+			solveAlgorithm.add(e.getMessage());
+		}
+
+		return solveAlgorithm;
 	}
 
 	public boolean sideCompleted(Side side) {
-		String color = side.getBrickColor(9);
+		Brick.Color color = side.getBrickColor(9);
 		for (int i = 1; i < 9; i++) {
 			if (color != side.getBrickColor(i)) {
 				return false;
@@ -57,12 +313,12 @@ public class CubeController {
 
 	public void showCube() throws IllegalArgumentException, IllegalAccessException {
 		Side sideF, sideD, sideL, sideU, sideR, sideB;
-		sideF = cube.getSideF();
-		sideD = cube.getSideD();
-		sideL = cube.getSideL();
-		sideU = cube.getSideU();
-		sideR = cube.getSideR();
-		sideB = cube.getSideB();
+		sideF = cube.getSideFront();
+		sideD = cube.getSideDown();
+		sideL = cube.getSideLeft();
+		sideU = cube.getSideUp();
+		sideR = cube.getSideRight();
+		sideB = cube.getSideBack();
 		for (int i = 0; i < 25; i++) {
 			System.out.println();
 		}
@@ -143,22 +399,22 @@ public class CubeController {
 	// --------------------------------------------------[X]
 	public void X() {
 		Side sideBuffer, sideF, sideD, sideU, sideB;
-		sideF = cube.getSideF();
-		sideD = cube.getSideD();
-		sideU = cube.getSideU();
-		sideB = cube.getSideB();
+		sideF = cube.getSideFront();
+		sideD = cube.getSideDown();
+		sideU = cube.getSideUp();
+		sideB = cube.getSideBack();
 
-		cube.getSideR().rotateSelf(1);
-		cube.getSideL().rotateSelf(3);
+		cube.getSideRight().rotateSelf(1);
+		cube.getSideLeft().rotateSelf(3);
 
 		sideU.rotateSelf(2);
 		sideB.rotateSelf(2);
 
 		sideBuffer = sideF;
-		cube.setSideF(sideD);
-		cube.setSideD(sideB);
-		cube.setSideB(sideU);
-		cube.setSideU(sideBuffer);
+		cube.setSideFront(sideD);
+		cube.setSideDown(sideB);
+		cube.setSideBack(sideU);
+		cube.setSideUp(sideBuffer);
 	}
 
 	public void X(int quantity) {
@@ -178,19 +434,19 @@ public class CubeController {
 	// --------------------------------------------------[Y]
 	public void Y() {
 		Side sideBuffer, sideF, sideL, sideR, sideB;
-		sideF = cube.getSideF();
-		sideL = cube.getSideL();
-		sideR = cube.getSideR();
-		sideB = cube.getSideB();
+		sideF = cube.getSideFront();
+		sideL = cube.getSideLeft();
+		sideR = cube.getSideRight();
+		sideB = cube.getSideBack();
 
-		cube.getSideU().rotateSelf(1);
-		cube.getSideD().rotateSelf(3);
+		cube.getSideUp().rotateSelf(1);
+		cube.getSideDown().rotateSelf(3);
 
 		sideBuffer = sideF;
-		cube.setSideF(sideR);
-		cube.setSideR(sideB);
-		cube.setSideB(sideL);
-		cube.setSideL(sideBuffer);
+		cube.setSideFront(sideR);
+		cube.setSideRight(sideB);
+		cube.setSideBack(sideL);
+		cube.setSideLeft(sideBuffer);
 	}
 
 	public void Y(int quantity) {
@@ -210,13 +466,13 @@ public class CubeController {
 	// --------------------------------------------------[Z]
 	public void Z() {
 		Side sideBuffer, sideD, sideL, sideU, sideR;
-		sideD = cube.getSideD();
-		sideL = cube.getSideL();
-		sideU = cube.getSideU();
-		sideR = cube.getSideR();
+		sideD = cube.getSideDown();
+		sideL = cube.getSideLeft();
+		sideU = cube.getSideUp();
+		sideR = cube.getSideRight();
 
-		cube.getSideF().rotateSelf(1);
-		cube.getSideB().rotateSelf(3);
+		cube.getSideFront().rotateSelf(1);
+		cube.getSideBack().rotateSelf(3);
 
 		sideD.rotateSelf(1);
 		sideR.rotateSelf(1);
@@ -224,10 +480,10 @@ public class CubeController {
 		sideL.rotateSelf(1);
 
 		sideBuffer = sideD;
-		cube.setSideD(sideR);
-		cube.setSideR(sideU);
-		cube.setSideU(sideL);
-		cube.setSideL(sideBuffer);
+		cube.setSideDown(sideR);
+		cube.setSideRight(sideU);
+		cube.setSideUp(sideL);
+		cube.setSideLeft(sideBuffer);
 	}
 
 	public void Z(int quantity) {
@@ -259,11 +515,11 @@ public class CubeController {
 
 	public void F(int quantity) {
 		Side sideRotated, sideUp, sideRight, sideDown, sideLeft;
-		sideRotated = cube.getSideF();
-		sideUp = cube.getSideU();
-		sideRight = cube.getSideR();
-		sideDown = cube.getSideD();
-		sideLeft = cube.getSideL();
+		sideRotated = cube.getSideFront();
+		sideUp = cube.getSideUp();
+		sideRight = cube.getSideRight();
+		sideDown = cube.getSideDown();
+		sideLeft = cube.getSideLeft();
 
 		for (int i = 0; i < quantity; i++) {
 			sideRotated.rotate(sideUp, sideRight, sideDown, sideLeft);
@@ -304,11 +560,11 @@ public class CubeController {
 
 	public void D(int quantity) {
 		Side sideRotated, sideUp, sideRight, sideDown, sideLeft;
-		sideRotated = cube.getSideD();
-		sideUp = cube.getSideF();
-		sideRight = cube.getSideR();
-		sideDown = cube.getSideB();
-		sideLeft = cube.getSideL();
+		sideRotated = cube.getSideDown();
+		sideUp = cube.getSideFront();
+		sideRight = cube.getSideRight();
+		sideDown = cube.getSideBack();
+		sideLeft = cube.getSideLeft();
 
 		for (int i = 0; i < quantity; i++) {
 			sideRotated.rotate(sideUp, sideRight, sideDown, sideLeft);
@@ -349,11 +605,11 @@ public class CubeController {
 
 	public void L(int quantity) {
 		Side sideRotated, sideUp, sideRight, sideDown, sideLeft;
-		sideRotated = cube.getSideL();
-		sideUp = cube.getSideU();
-		sideRight = cube.getSideF();
-		sideDown = cube.getSideD();
-		sideLeft = cube.getSideB();
+		sideRotated = cube.getSideLeft();
+		sideUp = cube.getSideUp();
+		sideRight = cube.getSideFront();
+		sideDown = cube.getSideDown();
+		sideLeft = cube.getSideBack();
 
 		for (int i = 0; i < quantity; i++) {
 			sideRotated.rotate(sideUp, sideRight, sideDown, sideLeft);
@@ -394,11 +650,11 @@ public class CubeController {
 
 	public void U(int quantity) {
 		Side sideRotated, sideUp, sideRight, sideDown, sideLeft;
-		sideRotated = cube.getSideU();
-		sideUp = cube.getSideB();
-		sideRight = cube.getSideR();
-		sideDown = cube.getSideF();
-		sideLeft = cube.getSideL();
+		sideRotated = cube.getSideUp();
+		sideUp = cube.getSideBack();
+		sideRight = cube.getSideRight();
+		sideDown = cube.getSideFront();
+		sideLeft = cube.getSideLeft();
 
 		for (int i = 0; i < quantity; i++) {
 			sideRotated.rotate(sideUp, sideRight, sideDown, sideLeft);
@@ -439,11 +695,11 @@ public class CubeController {
 
 	public void R(int quantity) {
 		Side sideRotated, sideUp, sideRight, sideDown, sideLeft;
-		sideRotated = cube.getSideR();
-		sideUp = cube.getSideU();
-		sideRight = cube.getSideB();
-		sideDown = cube.getSideD();
-		sideLeft = cube.getSideF();
+		sideRotated = cube.getSideRight();
+		sideUp = cube.getSideUp();
+		sideRight = cube.getSideBack();
+		sideDown = cube.getSideDown();
+		sideLeft = cube.getSideFront();
 
 		for (int i = 0; i < quantity; i++) {
 			sideRotated.rotate(sideUp, sideRight, sideDown, sideLeft);
@@ -484,11 +740,11 @@ public class CubeController {
 
 	public void B(int quantity) {
 		Side sideRotated, sideUp, sideRight, sideDown, sideLeft;
-		sideRotated = cube.getSideB();
-		sideUp = cube.getSideU();
-		sideRight = cube.getSideL();
-		sideDown = cube.getSideD();
-		sideLeft = cube.getSideR();
+		sideRotated = cube.getSideBack();
+		sideUp = cube.getSideUp();
+		sideRight = cube.getSideLeft();
+		sideDown = cube.getSideDown();
+		sideLeft = cube.getSideRight();
 
 		for (int i = 0; i < quantity; i++) {
 			sideRotated.rotate(sideUp, sideRight, sideDown, sideLeft);

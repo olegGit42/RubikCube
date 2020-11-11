@@ -5,51 +5,51 @@
 	default-lazy-init="true">
 
 	<bean id="brickWGO" class="cube.BrickAngle">
-		<constructor-arg value="w" name="color1" />
-		<constructor-arg value="g" name="color2" />
-		<constructor-arg value="o" name="color3" />
+		<constructor-arg value="WHITE" name="color1" />
+		<constructor-arg value="GREEN" name="color2" />
+		<constructor-arg value="ORANGE" name="color3" />
 	</bean>
 
 	<bean id="brickWOB" class="cube.BrickAngle">
-		<constructor-arg value="w" name="color1" />
-		<constructor-arg value="o" name="color2" />
-		<constructor-arg value="b" name="color3" />
+		<constructor-arg value="WHITE" name="color1" />
+		<constructor-arg value="ORANGE" name="color2" />
+		<constructor-arg value="BLUE" name="color3" />
 	</bean>
 
 	<bean id="brickWBR" class="cube.BrickAngle">
-		<constructor-arg value="w" name="color1" />
-		<constructor-arg value="b" name="color2" />
-		<constructor-arg value="r" name="color3" />
+		<constructor-arg value="WHITE" name="color1" />
+		<constructor-arg value="BLUE" name="color2" />
+		<constructor-arg value="RED" name="color3" />
 	</bean>
 
 	<bean id="brickWRG" class="cube.BrickAngle">
-		<constructor-arg value="w" name="color1" />
-		<constructor-arg value="r" name="color2" />
-		<constructor-arg value="g" name="color3" />
+		<constructor-arg value="WHITE" name="color1" />
+		<constructor-arg value="RED" name="color2" />
+		<constructor-arg value="GREEN" name="color3" />
 	</bean>
 
 	<bean id="brickYBO" class="cube.BrickAngle">
-		<constructor-arg value="y" name="color1" />
-		<constructor-arg value="b" name="color2" />
-		<constructor-arg value="o" name="color3" />
+		<constructor-arg value="YELLOW" name="color1" />
+		<constructor-arg value="BLUE" name="color2" />
+		<constructor-arg value="ORANGE" name="color3" />
 	</bean>
 
 	<bean id="brickYOG" class="cube.BrickAngle">
-		<constructor-arg value="y" name="color1" />
-		<constructor-arg value="o" name="color2" />
-		<constructor-arg value="g" name="color3" />
+		<constructor-arg value="YELLOW" name="color1" />
+		<constructor-arg value="ORANGE" name="color2" />
+		<constructor-arg value="GREEN" name="color3" />
 	</bean>
 
 	<bean id="brickYGR" class="cube.BrickAngle">
-		<constructor-arg value="y" name="color1" />
-		<constructor-arg value="g" name="color2" />
-		<constructor-arg value="r" name="color3" />
+		<constructor-arg value="YELLOW" name="color1" />
+		<constructor-arg value="GREEN" name="color2" />
+		<constructor-arg value="RED" name="color3" />
 	</bean>
 
 	<bean id="brickYRB" class="cube.BrickAngle">
-		<constructor-arg value="y" name="color1" />
-		<constructor-arg value="r" name="color2" />
-		<constructor-arg value="b" name="color3" />
+		<constructor-arg value="YELLOW" name="color1" />
+		<constructor-arg value="RED" name="color2" />
+		<constructor-arg value="BLUE" name="color3" />
 	</bean>
 
 </beans>

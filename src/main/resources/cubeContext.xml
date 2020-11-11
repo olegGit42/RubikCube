@@ -7,12 +7,12 @@
 	<import resource="sideContext.xml" />
 
 <!-- 	<bean id="cube" class="cube.Cube" scope="prototype"> -->
-<!-- 		<constructor-arg ref="sideW" name="side1" /> -->
-<!-- 		<constructor-arg ref="sideR" name="side2" /> -->
-<!-- 		<constructor-arg ref="sideG" name="side3" /> -->
-<!-- 		<constructor-arg ref="sideO" name="side4" /> -->
-<!-- 		<constructor-arg ref="sideB" name="side5" /> -->
-<!-- 		<constructor-arg ref="sideY" name="side6" /> -->
+<!-- 		<constructor-arg ref="sideW" name="sideW" /> -->
+<!-- 		<constructor-arg ref="sideR" name="sideR" /> -->
+<!-- 		<constructor-arg ref="sideG" name="sideG" /> -->
+<!-- 		<constructor-arg ref="sideO" name="sideO" /> -->
+<!-- 		<constructor-arg ref="sideB" name="sideB" /> -->
+<!-- 		<constructor-arg ref="sideY" name="sideY" /> -->
 <!-- 	</bean> -->
 
 <!-- 	<bean id="cubeController" class="cube.CubeController" scope="prototype"> -->

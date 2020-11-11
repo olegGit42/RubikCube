@@ -10,7 +10,7 @@
 
 	<bean id="side" class="cube.Side" scope="prototype" />
 
-	<bean id="sideW" class="cube.Side" scope="prototype">
+	<bean id="sideWhite" class="cube.Side" scope="prototype">
 		<constructor-arg ref="brickWGO" name="brickAngle1" />
 		<constructor-arg ref="brickWOB" name="brickAngle2" />
 		<constructor-arg ref="brickWBR" name="brickAngle3" />
@@ -34,7 +34,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="sideR" class="cube.Side" scope="prototype">
+	<bean id="sideRed" class="cube.Side" scope="prototype">
 		<constructor-arg ref="brickWRG" name="brickAngle1" />
 		<constructor-arg ref="brickWBR" name="brickAngle2" />
 		<constructor-arg ref="brickYRB" name="brickAngle3" />
@@ -58,7 +58,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="sideG" class="cube.Side" scope="prototype">
+	<bean id="sideGreen" class="cube.Side" scope="prototype">
 		<constructor-arg ref="brickYOG" name="brickAngle1" />
 		<constructor-arg ref="brickWGO" name="brickAngle2" />
 		<constructor-arg ref="brickWRG" name="brickAngle3" />
@@ -82,7 +82,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="sideO" class="cube.Side" scope="prototype">
+	<bean id="sideOrange" class="cube.Side" scope="prototype">
 		<constructor-arg ref="brickYOG" name="brickAngle1" />
 		<constructor-arg ref="brickYBO" name="brickAngle2" />
 		<constructor-arg ref="brickWOB" name="brickAngle3" />
@@ -106,7 +106,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="sideB" class="cube.Side" scope="prototype">
+	<bean id="sideBlue" class="cube.Side" scope="prototype">
 		<constructor-arg ref="brickWOB" name="brickAngle1" />
 		<constructor-arg ref="brickYBO" name="brickAngle2" />
 		<constructor-arg ref="brickYRB" name="brickAngle3" />
@@ -130,7 +130,7 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="sideY" class="cube.Side" scope="prototype">
+	<bean id="sideYellow" class="cube.Side" scope="prototype">
 		<constructor-arg ref="brickYBO" name="brickAngle1" />
 		<constructor-arg ref="brickYOG" name="brickAngle2" />
 		<constructor-arg ref="brickYGR" name="brickAngle3" />

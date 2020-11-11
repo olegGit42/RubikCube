@@ -7,8 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cube.Brick.Color;
 import lombok.Data;
-import rubick.Rubick.RubickMain;
+import rubick.rubick.RubickMain;
 
 @Data
 public class Side implements Cloneable {
@@ -60,7 +61,32 @@ public class Side implements Cloneable {
 		this.brickColor = brickColor;
 	}
 
-	public String getBrickColor(int brickNum) {
+	public Brick getBrick(int brickNum) {
+		switch (brickNum) {
+		case 1:
+			return brickAngle1;
+		case 2:
+			return brickSide1;
+		case 3:
+			return brickAngle2;
+		case 4:
+			return brickSide4;
+		case 5:
+			return brickCenter;
+		case 6:
+			return brickSide2;
+		case 7:
+			return brickAngle4;
+		case 8:
+			return brickSide3;
+		case 9:
+			return brickAngle3;
+		default:
+			return null;
+		}
+	}
+
+	public Brick.Color getBrickColor(int brickNum) {
 		switch (brickNum) {
 		case 1:
 			return brickAngle1.getColor(brickColor[0]);
@@ -80,6 +106,31 @@ public class Side implements Cloneable {
 			return brickSide3.getColor(brickColor[6]);
 		case 9:
 			return brickAngle3.getColor(brickColor[2]);
+		default:
+			return null;
+		}
+	}
+
+	public Brick.Color changeBrickColor(int brickNum, Color color) {
+		switch (brickNum) {
+		case 1:
+			return brickAngle1.changeColor(brickColor[0], color);
+		case 2:
+			return brickSide1.changeColor(brickColor[4], color);
+		case 3:
+			return brickAngle2.changeColor(brickColor[1], color);
+		case 4:
+			return brickSide4.changeColor(brickColor[7], color);
+		case 5:
+			return brickCenter.changeColor(1, color);
+		case 6:
+			return brickSide2.changeColor(brickColor[5], color);
+		case 7:
+			return brickAngle4.changeColor(brickColor[3], color);
+		case 8:
+			return brickSide3.changeColor(brickColor[6], color);
+		case 9:
+			return brickAngle3.changeColor(brickColor[2], color);
 		default:
 			return null;
 		}
@@ -260,6 +311,12 @@ public class Side implements Cloneable {
 		brickColor[7] = brickColor[6];
 		brickColor[6] = brickColor[5];
 		brickColor[5] = index;
+	}
+
+	public void setSideColor(Brick.Color color) {
+		for (int i = 1; i < 10; i++) {
+			changeBrickColor(i, color);
+		}
 	}
 
 	@Override

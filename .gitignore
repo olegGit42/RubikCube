@@ -2,6 +2,7 @@
 target/
 *.jar
 *.zip
-/bin
+/bin
 !.gitignore
-!Release/Rubick.jar
+!Release/Rubik.jar
+dependency-reduced-pom.xml

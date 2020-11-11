@@ -11,33 +11,42 @@ import lombok.Data;
 @Data
 @Component
 @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class Cube {
+public class Cube implements Cloneable {
 	@Autowired
-	@Qualifier("sideW")
-	Side sideF;
+	@Qualifier("sideWhite")
+	Side sideFront;
 	@Autowired
-	@Qualifier("sideR")
-	Side sideD;
+	@Qualifier("sideRed")
+	Side sideDown;
 	@Autowired
-	@Qualifier("sideG")
-	Side sideL;
+	@Qualifier("sideGreen")
+	Side sideLeft;
 	@Autowired
-	@Qualifier("sideO")
-	Side sideU;
+	@Qualifier("sideOrange")
+	Side sideUp;
 	@Autowired
-	@Qualifier("sideB")
-	Side sideR;
+	@Qualifier("sideBlue")
+	Side sideRight;
 	@Autowired
-	@Qualifier("sideY")
-	Side sideB;
+	@Qualifier("sideYellow")
+	Side sideBack;
 
 	public Cube() {
 	}
 
-	/*
-	 * public Cube(Side side1, Side side2, Side side3, Side side4, Side side5, Side
-	 * side6) { this.sideF = side1; this.sideD = side2; this.sideL = side3;
-	 * this.sideU = side4; this.sideR = side5; this.sideB = side6; }
-	 */
+	public Cube(Side sideFront, Side sideDown, Side sideLeft, Side sideUp, Side sideRight, Side sideBack) {
+		this.sideFront = sideFront;
+		this.sideDown = sideDown;
+		this.sideLeft = sideLeft;
+		this.sideUp = sideUp;
+		this.sideRight = sideRight;
+		this.sideBack = sideBack;
+	}
+
+	@Override
+	public Cube clone() {
+		return new Cube(sideFront.clone(), sideDown.clone(), sideLeft.clone(), sideUp.clone(), sideRight.clone(),
+				sideBack.clone());
+	}
 
 }

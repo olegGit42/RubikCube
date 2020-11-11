@@ -1,2 +1,2 @@
 # RubikCube
-Flat Rubik's Cube simulator.
+Flat Rubik's Cube simulator and solver.

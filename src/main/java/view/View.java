@@ -4,30 +4,41 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import cube.Brick;
 import cube.Cube;
 import cube.CubeController;
 import cube.Rotate;
 import cube.Side;
-import rubick.Rubick.RubickMain;
+import rubick.rubick.RubickMain;
 
 public class View extends JFrame {
 	private static final long serialVersionUID = -8028973046728553519L;
 
 	public static CubeController cubeController = RubickMain.appContext.getBean("cubeController", CubeController.class);
 	public static Cube cube = cubeController.getCube();
-	public static Map<String, Color> colorMapping;
+	public static Map<Brick.Color, Color> colorMapping;
 	public static Map<Integer, Rotate> rotateMapping;
 
+	private Brick.Color brickColorTemplate = null;
+
 	private JPanel contentPane;
+	private JTextArea solvingAlgorithm;
+	private JTextArea notification;
 	private JPanel sideF;
 	private JPanel brickF1;
 	private JPanel brickF2;
@@ -88,6 +99,14 @@ public class View extends JFrame {
 	private JPanel brickB7;
 	private JPanel brickB8;
 	private JPanel brickB9;
+	private static List<JPanel> colorTemplatesList = new ArrayList<>();
+	private JPanel colorTemplates;
+	private JPanel templateWhite;
+	private JPanel templateBlue;
+	private JPanel templateRed;
+	private JPanel templateGreen;
+	private JPanel templateOrange;
+	private JPanel templateYellow;
 	private JButton btnR;
 	private JButton btnL;
 	private JButton btnU;
@@ -129,12 +148,12 @@ public class View extends JFrame {
 
 	static {
 		colorMapping = new HashMap<>();
-		colorMapping.put("w", Color.WHITE);
-		colorMapping.put("b", Color.BLUE);
-		colorMapping.put("r", Color.RED);
-		colorMapping.put("g", Color.GREEN);
-		colorMapping.put("o", Color.ORANGE);
-		colorMapping.put("y", Color.YELLOW);
+		colorMapping.put(Brick.Color.WHITE, Color.WHITE);
+		colorMapping.put(Brick.Color.BLUE, Color.BLUE);
+		colorMapping.put(Brick.Color.RED, Color.RED);
+		colorMapping.put(Brick.Color.GREEN, Color.GREEN);
+		colorMapping.put(Brick.Color.ORANGE, Color.ORANGE);
+		colorMapping.put(Brick.Color.YELLOW, Color.YELLOW);
 
 		rotateMapping = new HashMap<>();
 		rotateMapping.put(1, cubeController::R);
@@ -167,9 +186,9 @@ public class View extends JFrame {
 	 * Create the frame.
 	 */
 	public View() {
-		setTitle("Rubick");
+		setTitle("Rubik");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 950, 420);
+		setBounds(100, 100, 950, 492);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -186,38 +205,92 @@ public class View extends JFrame {
 		brickD1 = new JPanel();
 		brickD1.setBackground(Color.RED);
 		sideD.add(brickD1);
+		brickD1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideDown(), 1);
+			}
+		});
 
 		brickD2 = new JPanel();
 		brickD2.setBackground(Color.RED);
 		sideD.add(brickD2);
+		brickD2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideDown(), 2);
+			}
+		});
 
 		brickD3 = new JPanel();
 		brickD3.setBackground(Color.RED);
 		sideD.add(brickD3);
+		brickD3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideDown(), 3);
+			}
+		});
 
 		brickD4 = new JPanel();
 		brickD4.setBackground(Color.RED);
 		sideD.add(brickD4);
+		brickD4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideDown(), 4);
+			}
+		});
 
 		brickD5 = new JPanel();
 		brickD5.setBackground(Color.RED);
 		sideD.add(brickD5);
+		brickD5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideDown(), 5);
+			}
+		});
 
 		brickD6 = new JPanel();
 		brickD6.setBackground(Color.RED);
 		sideD.add(brickD6);
+		brickD6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideDown(), 6);
+			}
+		});
 
 		brickD7 = new JPanel();
 		brickD7.setBackground(Color.RED);
 		sideD.add(brickD7);
+		brickD7.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideDown(), 7);
+			}
+		});
 
 		brickD8 = new JPanel();
 		brickD8.setBackground(Color.RED);
 		sideD.add(brickD8);
+		brickD8.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideDown(), 8);
+			}
+		});
 
 		brickD9 = new JPanel();
 		brickD9.setBackground(Color.RED);
 		sideD.add(brickD9);
+		brickD9.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideDown(), 9);
+			}
+		});
 
 		sideU = new JPanel();
 		sideU.setBounds(141, 5, 120, 120);
@@ -227,38 +300,92 @@ public class View extends JFrame {
 		brickU1 = new JPanel();
 		brickU1.setBackground(Color.ORANGE);
 		sideU.add(brickU1);
+		brickU1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideUp(), 1);
+			}
+		});
 
 		brickU2 = new JPanel();
 		brickU2.setBackground(Color.ORANGE);
 		sideU.add(brickU2);
+		brickU2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideUp(), 2);
+			}
+		});
 
 		brickU3 = new JPanel();
 		brickU3.setBackground(Color.ORANGE);
 		sideU.add(brickU3);
+		brickU3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideUp(), 3);
+			}
+		});
 
 		brickU4 = new JPanel();
 		brickU4.setBackground(Color.ORANGE);
 		sideU.add(brickU4);
+		brickU4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideUp(), 4);
+			}
+		});
 
 		brickU5 = new JPanel();
 		brickU5.setBackground(Color.ORANGE);
 		sideU.add(brickU5);
+		brickU5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideUp(), 5);
+			}
+		});
 
 		brickU6 = new JPanel();
 		brickU6.setBackground(Color.ORANGE);
 		sideU.add(brickU6);
+		brickU6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideUp(), 6);
+			}
+		});
 
 		brickU7 = new JPanel();
 		brickU7.setBackground(Color.ORANGE);
 		sideU.add(brickU7);
+		brickU7.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideUp(), 7);
+			}
+		});
 
 		brickU8 = new JPanel();
 		brickU8.setBackground(Color.ORANGE);
 		sideU.add(brickU8);
+		brickU8.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideUp(), 8);
+			}
+		});
 
 		brickU9 = new JPanel();
 		brickU9.setBackground(Color.ORANGE);
 		sideU.add(brickU9);
+		brickU9.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideUp(), 9);
+			}
+		});
 
 		sideL = new JPanel();
 		sideL.setBounds(15, 131, 120, 120);
@@ -268,38 +395,92 @@ public class View extends JFrame {
 		brickL1 = new JPanel();
 		brickL1.setBackground(Color.GREEN);
 		sideL.add(brickL1);
+		brickL1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideLeft(), 1);
+			}
+		});
 
 		brickL2 = new JPanel();
 		brickL2.setBackground(Color.GREEN);
 		sideL.add(brickL2);
+		brickL2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideLeft(), 2);
+			}
+		});
 
 		brickL3 = new JPanel();
 		brickL3.setBackground(Color.GREEN);
 		sideL.add(brickL3);
+		brickL3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideLeft(), 3);
+			}
+		});
 
 		brickL4 = new JPanel();
 		brickL4.setBackground(Color.GREEN);
 		sideL.add(brickL4);
+		brickL4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideLeft(), 4);
+			}
+		});
 
 		brickL5 = new JPanel();
 		brickL5.setBackground(Color.GREEN);
 		sideL.add(brickL5);
+		brickL5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideLeft(), 5);
+			}
+		});
 
 		brickL6 = new JPanel();
 		brickL6.setBackground(Color.GREEN);
 		sideL.add(brickL6);
+		brickL6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideLeft(), 6);
+			}
+		});
 
 		brickL7 = new JPanel();
 		brickL7.setBackground(Color.GREEN);
 		sideL.add(brickL7);
+		brickL7.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideLeft(), 7);
+			}
+		});
 
 		brickL8 = new JPanel();
 		brickL8.setBackground(Color.GREEN);
 		sideL.add(brickL8);
+		brickL8.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideLeft(), 8);
+			}
+		});
 
 		brickL9 = new JPanel();
 		brickL9.setBackground(Color.GREEN);
 		sideL.add(brickL9);
+		brickL9.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideLeft(), 9);
+			}
+		});
 
 		sideR = new JPanel();
 		sideR.setBounds(267, 131, 120, 120);
@@ -309,38 +490,175 @@ public class View extends JFrame {
 		brickR1 = new JPanel();
 		brickR1.setBackground(Color.BLUE);
 		sideR.add(brickR1);
+		brickR1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideRight(), 1);
+			}
+		});
 
 		brickR2 = new JPanel();
 		brickR2.setBackground(Color.BLUE);
 		sideR.add(brickR2);
+		brickR2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideRight(), 2);
+			}
+		});
 
 		brickR3 = new JPanel();
 		brickR3.setBackground(Color.BLUE);
 		sideR.add(brickR3);
+		brickR3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideRight(), 3);
+			}
+		});
 
 		brickR4 = new JPanel();
 		brickR4.setBackground(Color.BLUE);
 		sideR.add(brickR4);
+		brickR4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideRight(), 4);
+			}
+		});
 
 		brickR5 = new JPanel();
 		brickR5.setBackground(Color.BLUE);
 		sideR.add(brickR5);
+		brickR5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideRight(), 5);
+			}
+		});
 
 		brickR6 = new JPanel();
 		brickR6.setBackground(Color.BLUE);
 		sideR.add(brickR6);
+		brickR6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideRight(), 6);
+			}
+		});
 
 		brickR7 = new JPanel();
 		brickR7.setBackground(Color.BLUE);
 		sideR.add(brickR7);
+		brickR7.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideRight(), 7);
+			}
+		});
 
 		brickR8 = new JPanel();
 		brickR8.setBackground(Color.BLUE);
 		sideR.add(brickR8);
+		brickR8.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideRight(), 8);
+			}
+		});
 
 		brickR9 = new JPanel();
 		brickR9.setBackground(Color.BLUE);
 		sideR.add(brickR9);
+		brickR9.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideRight(), 9);
+			}
+		});
+
+		// colorTemplates begin
+
+		colorTemplates = new JPanel();
+		colorTemplates.setBounds(393, 297, 120, 80);
+		colorTemplates.setBorder(new LineBorder(new Color(0, 0, 0)));
+		colorTemplates.setLayout(new GridLayout(0, 3, 2, 2));
+
+		templateWhite = new JPanel();
+		templateWhite.setBackground(Color.WHITE);
+		templateWhite.setBorder(new LineBorder(Color.GRAY, 10));
+		colorTemplates.add(templateWhite);
+		templateWhite.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				setBrickColorTemplate(templateWhite, Brick.Color.WHITE);
+			}
+		});
+
+		templateBlue = new JPanel();
+		templateBlue.setBackground(Color.BLUE);
+		templateBlue.setBorder(new LineBorder(Color.GRAY, 10));
+		colorTemplates.add(templateBlue);
+		templateBlue.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				setBrickColorTemplate(templateBlue, Brick.Color.BLUE);
+			}
+		});
+
+		templateRed = new JPanel();
+		templateRed.setBackground(Color.RED);
+		templateRed.setBorder(new LineBorder(Color.GRAY, 10));
+		colorTemplates.add(templateRed);
+		templateRed.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				setBrickColorTemplate(templateRed, Brick.Color.RED);
+			}
+		});
+
+		templateGreen = new JPanel();
+		templateGreen.setBackground(Color.GREEN);
+		templateGreen.setBorder(new LineBorder(Color.GRAY, 10));
+		colorTemplates.add(templateGreen);
+		templateGreen.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				setBrickColorTemplate(templateGreen, Brick.Color.GREEN);
+			}
+		});
+
+		templateOrange = new JPanel();
+		templateOrange.setBackground(Color.ORANGE);
+		templateOrange.setBorder(new LineBorder(Color.GRAY, 10));
+		colorTemplates.add(templateOrange);
+		templateOrange.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				setBrickColorTemplate(templateOrange, Brick.Color.ORANGE);
+			}
+		});
+
+		templateYellow = new JPanel();
+		templateYellow.setBackground(Color.YELLOW);
+		templateYellow.setBorder(new LineBorder(Color.GRAY, 10));
+		colorTemplates.add(templateYellow);
+		templateYellow.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				setBrickColorTemplate(templateYellow, Brick.Color.YELLOW);
+			}
+		});
+
+		colorTemplatesList.clear();
+		colorTemplatesList.add(templateWhite);
+		colorTemplatesList.add(templateBlue);
+		colorTemplatesList.add(templateRed);
+		colorTemplatesList.add(templateGreen);
+		colorTemplatesList.add(templateOrange);
+		colorTemplatesList.add(templateYellow);
+
+		// colorTemplates end
 
 		sideB = new JPanel();
 		sideB.setBounds(393, 131, 120, 120);
@@ -350,38 +668,92 @@ public class View extends JFrame {
 		brickB1 = new JPanel();
 		brickB1.setBackground(Color.YELLOW);
 		sideB.add(brickB1);
+		brickB1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideBack(), 1);
+			}
+		});
 
 		brickB2 = new JPanel();
 		brickB2.setBackground(Color.YELLOW);
 		sideB.add(brickB2);
+		brickB2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideBack(), 2);
+			}
+		});
 
 		brickB3 = new JPanel();
 		brickB3.setBackground(Color.YELLOW);
 		sideB.add(brickB3);
+		brickB3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideBack(), 3);
+			}
+		});
 
 		brickB4 = new JPanel();
 		brickB4.setBackground(Color.YELLOW);
 		sideB.add(brickB4);
+		brickB4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideBack(), 4);
+			}
+		});
 
 		brickB5 = new JPanel();
 		brickB5.setBackground(Color.YELLOW);
 		sideB.add(brickB5);
+		brickB5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideBack(), 5);
+			}
+		});
 
 		brickB6 = new JPanel();
 		brickB6.setBackground(Color.YELLOW);
 		sideB.add(brickB6);
+		brickB6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideBack(), 6);
+			}
+		});
 
 		brickB7 = new JPanel();
 		brickB7.setBackground(Color.YELLOW);
 		sideB.add(brickB7);
+		brickB7.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideBack(), 7);
+			}
+		});
 
 		brickB8 = new JPanel();
 		brickB8.setBackground(Color.YELLOW);
 		sideB.add(brickB8);
+		brickB8.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideBack(), 8);
+			}
+		});
 
 		brickB9 = new JPanel();
 		brickB9.setBackground(Color.YELLOW);
 		sideB.add(brickB9);
+		brickB9.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideBack(), 9);
+			}
+		});
 
 		btnR = new JButton("R");
 		btnR.setBounds(621, 16, 55, 23);
@@ -441,6 +813,7 @@ public class View extends JFrame {
 		btnSolve.setBounds(807, 354, 117, 23);
 		btnSolve.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// scramble();
 				completeCube();
 			}
 		});
@@ -449,38 +822,93 @@ public class View extends JFrame {
 		brickF1 = new JPanel();
 		brickF1.setBackground(Color.WHITE);
 		sideF.add(brickF1);
+		brickF1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideFront(), 1);
+			}
+		});
 
 		brickF2 = new JPanel();
 		brickF2.setBackground(Color.WHITE);
 		sideF.add(brickF2);
+		brickF2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideFront(), 2);
+			}
+		});
 
 		brickF3 = new JPanel();
 		brickF3.setBackground(Color.WHITE);
 		sideF.add(brickF3);
+		brickF3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideFront(), 3);
+			}
+		});
 
 		brickF4 = new JPanel();
 		brickF4.setBackground(Color.WHITE);
 		sideF.add(brickF4);
+		brickF4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideFront(), 4);
+			}
+		});
 
 		brickF5 = new JPanel();
 		brickF5.setBackground(Color.WHITE);
 		sideF.add(brickF5);
+		brickF5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideFront(), 5);
+			}
+		});
 
 		brickF6 = new JPanel();
 		brickF6.setBackground(Color.WHITE);
 		sideF.add(brickF6);
+		brickF6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideFront(), 6);
+			}
+		});
 
 		brickF7 = new JPanel();
 		brickF7.setBackground(Color.WHITE);
 		sideF.add(brickF7);
+		brickF7.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideFront(), 7);
+			}
+		});
 
 		brickF8 = new JPanel();
 		brickF8.setBackground(Color.WHITE);
 		sideF.add(brickF8);
+		brickF8.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideFront(), 8);
+			}
+		});
 
 		brickF9 = new JPanel();
 		brickF9.setBackground(Color.WHITE);
 		sideF.add(brickF9);
+		brickF9.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				colorChange(cubeController.getCube().getSideFront(), 9);
+			}
+		});
+
 		contentPane.setLayout(null);
 		contentPane.add(sideU);
 		contentPane.add(sideD);
@@ -495,8 +923,9 @@ public class View extends JFrame {
 		contentPane.add(btnD);
 		contentPane.add(btnF);
 		contentPane.add(btnB);
+		contentPane.add(colorTemplates);
 
-		btnLr = new JButton("Lr");
+		btnLr = new JButton("L'");
 		btnLr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Lr();
@@ -506,7 +935,7 @@ public class View extends JFrame {
 		btnLr.setBounds(559, 44, 55, 23);
 		contentPane.add(btnLr);
 
-		btnRr = new JButton("Rr");
+		btnRr = new JButton("R'");
 		btnRr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Rr();
@@ -516,7 +945,7 @@ public class View extends JFrame {
 		btnRr.setBounds(621, 44, 55, 23);
 		contentPane.add(btnRr);
 
-		btnUr = new JButton("Ur");
+		btnUr = new JButton("U'");
 		btnUr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Ur();
@@ -526,7 +955,7 @@ public class View extends JFrame {
 		btnUr.setBounds(683, 44, 55, 23);
 		contentPane.add(btnUr);
 
-		btnDr = new JButton("Dr");
+		btnDr = new JButton("D'");
 		btnDr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Dr();
@@ -536,7 +965,7 @@ public class View extends JFrame {
 		btnDr.setBounds(745, 44, 55, 23);
 		contentPane.add(btnDr);
 
-		btnFr = new JButton("Fr");
+		btnFr = new JButton("F'");
 		btnFr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Fr();
@@ -546,7 +975,7 @@ public class View extends JFrame {
 		btnFr.setBounds(807, 44, 55, 23);
 		contentPane.add(btnFr);
 
-		btnBr = new JButton("Br");
+		btnBr = new JButton("B'");
 		btnBr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Br();
@@ -676,7 +1105,7 @@ public class View extends JFrame {
 		btnBw.setBounds(869, 116, 55, 23);
 		contentPane.add(btnBw);
 
-		btnLwr = new JButton("Lwr");
+		btnLwr = new JButton("Lw'");
 		btnLwr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Lwr();
@@ -686,7 +1115,7 @@ public class View extends JFrame {
 		btnLwr.setBounds(559, 144, 55, 23);
 		contentPane.add(btnLwr);
 
-		btnRwr = new JButton("Rwr");
+		btnRwr = new JButton("Rw'");
 		btnRwr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Rwr();
@@ -696,7 +1125,7 @@ public class View extends JFrame {
 		btnRwr.setBounds(621, 144, 55, 23);
 		contentPane.add(btnRwr);
 
-		btnUwr = new JButton("Uwr");
+		btnUwr = new JButton("Uw'");
 		btnUwr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Uwr();
@@ -706,7 +1135,7 @@ public class View extends JFrame {
 		btnUwr.setBounds(683, 144, 55, 23);
 		contentPane.add(btnUwr);
 
-		btnDwr = new JButton("Dwr");
+		btnDwr = new JButton("Dw'");
 		btnDwr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Dwr();
@@ -716,7 +1145,7 @@ public class View extends JFrame {
 		btnDwr.setBounds(745, 144, 55, 23);
 		contentPane.add(btnDwr);
 
-		btnFwr = new JButton("Fwr");
+		btnFwr = new JButton("Fw'");
 		btnFwr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Fwr();
@@ -726,7 +1155,7 @@ public class View extends JFrame {
 		btnFwr.setBounds(807, 144, 55, 23);
 		contentPane.add(btnFwr);
 
-		btnBwr = new JButton("Bwr");
+		btnBwr = new JButton("Bw'");
 		btnBwr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Bwr();
@@ -826,7 +1255,7 @@ public class View extends JFrame {
 		btnE.setBounds(683, 220, 55, 23);
 		contentPane.add(btnE);
 
-		JButton btnX = new JButton("X");
+		JButton btnX = new JButton("x");
 		btnX.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.X();
@@ -836,7 +1265,7 @@ public class View extends JFrame {
 		btnX.setBounds(745, 220, 55, 23);
 		contentPane.add(btnX);
 
-		JButton btnY = new JButton("Y");
+		JButton btnY = new JButton("y");
 		btnY.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Y();
@@ -846,7 +1275,7 @@ public class View extends JFrame {
 		btnY.setBounds(807, 220, 55, 23);
 		contentPane.add(btnY);
 
-		JButton btnZ = new JButton("Z");
+		JButton btnZ = new JButton("z");
 		btnZ.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Z();
@@ -856,7 +1285,7 @@ public class View extends JFrame {
 		btnZ.setBounds(869, 220, 55, 23);
 		contentPane.add(btnZ);
 
-		JButton btnMr = new JButton("Mr");
+		JButton btnMr = new JButton("M'");
 		btnMr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Mr();
@@ -866,7 +1295,7 @@ public class View extends JFrame {
 		btnMr.setBounds(559, 248, 55, 23);
 		contentPane.add(btnMr);
 
-		JButton btnSr = new JButton("Sr");
+		JButton btnSr = new JButton("S'");
 		btnSr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Sr();
@@ -876,7 +1305,7 @@ public class View extends JFrame {
 		btnSr.setBounds(621, 248, 55, 23);
 		contentPane.add(btnSr);
 
-		JButton btnEr = new JButton("Er");
+		JButton btnEr = new JButton("E'");
 		btnEr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Er();
@@ -886,7 +1315,7 @@ public class View extends JFrame {
 		btnEr.setBounds(683, 248, 55, 23);
 		contentPane.add(btnEr);
 
-		JButton btnXr = new JButton("Xr");
+		JButton btnXr = new JButton("x'");
 		btnXr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Xr();
@@ -896,7 +1325,7 @@ public class View extends JFrame {
 		btnXr.setBounds(745, 248, 55, 23);
 		contentPane.add(btnXr);
 
-		JButton btnYr = new JButton("Yr");
+		JButton btnYr = new JButton("y'");
 		btnYr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Yr();
@@ -906,7 +1335,7 @@ public class View extends JFrame {
 		btnYr.setBounds(807, 248, 55, 23);
 		contentPane.add(btnYr);
 
-		JButton btnZr = new JButton("Zr");
+		JButton btnZr = new JButton("z'");
 		btnZr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Zr();
@@ -946,7 +1375,7 @@ public class View extends JFrame {
 		btnE2.setBounds(683, 276, 55, 23);
 		contentPane.add(btnE2);
 
-		JButton btnX2 = new JButton("X2");
+		JButton btnX2 = new JButton("x2");
 		btnX2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.X2();
@@ -956,7 +1385,7 @@ public class View extends JFrame {
 		btnX2.setBounds(745, 276, 55, 23);
 		contentPane.add(btnX2);
 
-		JButton btnY2 = new JButton("Y2");
+		JButton btnY2 = new JButton("y2");
 		btnY2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Y2();
@@ -966,7 +1395,7 @@ public class View extends JFrame {
 		btnY2.setBounds(807, 276, 55, 23);
 		contentPane.add(btnY2);
 
-		JButton btnZ2 = new JButton("Z2");
+		JButton btnZ2 = new JButton("z2");
 		btnZ2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cubeController.Z2();
@@ -984,6 +1413,54 @@ public class View extends JFrame {
 		});
 		btnScramble.setBounds(559, 354, 117, 23);
 		contentPane.add(btnScramble);
+
+		JButton btnReset = new JButton("Reset");
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cubeController.resetCube();
+				showCubeView();
+			}
+		});
+		btnReset.setBounds(15, 354, 70, 23);
+		contentPane.add(btnReset);
+
+		solvingAlgorithm = new JTextArea();
+		solvingAlgorithm.setLineWrap(true);
+
+		JScrollPane solvingAlgorithmScrollPane = new JScrollPane(solvingAlgorithm);
+		solvingAlgorithmScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		solvingAlgorithmScrollPane.setBounds(15, 380, 909, 70);
+
+		contentPane.add(solvingAlgorithmScrollPane);
+
+		notification = new JTextArea();
+		notification.setLineWrap(true);
+
+		JScrollPane notificationScrollPane = new JScrollPane(notification);
+		notificationScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		notificationScrollPane.setBounds(559, 300, 365, 55);
+
+		contentPane.add(notificationScrollPane);
+
+		cubeController.resetCube();
+
+		showCubeView();
+	}
+
+	public void colorChange(Side side, int brickIndex) {
+		side.changeBrickColor(brickIndex, brickColorTemplate);
+		showCubeView();
+	}
+
+	public void setBrickColorTemplate(JPanel panel, Brick.Color color) {
+		if (panel.getBorder() == null) {
+			brickColorTemplate = null;
+			panel.setBorder(new LineBorder(Color.GRAY, 10));
+		} else {
+			colorTemplatesList.forEach(p -> p.setBorder(new LineBorder(Color.GRAY, 10)));
+			panel.setBorder(null);
+			brickColorTemplate = color;
+		}
 	}
 
 	public void showCubeView(int millis) {
@@ -995,7 +1472,7 @@ public class View extends JFrame {
 	}
 
 	public void showCubeView() {
-		Side side = cube.getSideF();
+		Side side = cube.getSideFront();
 		brickF1.setBackground(colorMapping.get(side.getBrickColor(1)));
 		brickF2.setBackground(colorMapping.get(side.getBrickColor(2)));
 		brickF3.setBackground(colorMapping.get(side.getBrickColor(3)));
@@ -1006,7 +1483,7 @@ public class View extends JFrame {
 		brickF8.setBackground(colorMapping.get(side.getBrickColor(8)));
 		brickF9.setBackground(colorMapping.get(side.getBrickColor(9)));
 
-		side = cube.getSideD();
+		side = cube.getSideDown();
 		brickD1.setBackground(colorMapping.get(side.getBrickColor(1)));
 		brickD2.setBackground(colorMapping.get(side.getBrickColor(2)));
 		brickD3.setBackground(colorMapping.get(side.getBrickColor(3)));
@@ -1017,7 +1494,7 @@ public class View extends JFrame {
 		brickD8.setBackground(colorMapping.get(side.getBrickColor(8)));
 		brickD9.setBackground(colorMapping.get(side.getBrickColor(9)));
 
-		side = cube.getSideU();
+		side = cube.getSideUp();
 		brickU1.setBackground(colorMapping.get(side.getBrickColor(1)));
 		brickU2.setBackground(colorMapping.get(side.getBrickColor(2)));
 		brickU3.setBackground(colorMapping.get(side.getBrickColor(3)));
@@ -1028,7 +1505,7 @@ public class View extends JFrame {
 		brickU8.setBackground(colorMapping.get(side.getBrickColor(8)));
 		brickU9.setBackground(colorMapping.get(side.getBrickColor(9)));
 
-		side = cube.getSideL();
+		side = cube.getSideLeft();
 		brickL1.setBackground(colorMapping.get(side.getBrickColor(1)));
 		brickL2.setBackground(colorMapping.get(side.getBrickColor(2)));
 		brickL3.setBackground(colorMapping.get(side.getBrickColor(3)));
@@ -1039,7 +1516,7 @@ public class View extends JFrame {
 		brickL8.setBackground(colorMapping.get(side.getBrickColor(8)));
 		brickL9.setBackground(colorMapping.get(side.getBrickColor(9)));
 
-		side = cube.getSideR();
+		side = cube.getSideRight();
 		brickR1.setBackground(colorMapping.get(side.getBrickColor(1)));
 		brickR2.setBackground(colorMapping.get(side.getBrickColor(2)));
 		brickR3.setBackground(colorMapping.get(side.getBrickColor(3)));
@@ -1050,7 +1527,7 @@ public class View extends JFrame {
 		brickR8.setBackground(colorMapping.get(side.getBrickColor(8)));
 		brickR9.setBackground(colorMapping.get(side.getBrickColor(9)));
 
-		side = cube.getSideB();
+		side = cube.getSideBack();
 		brickB1.setBackground(colorMapping.get(side.getBrickColor(1)));
 		brickB2.setBackground(colorMapping.get(side.getBrickColor(2)));
 		brickB3.setBackground(colorMapping.get(side.getBrickColor(3)));
@@ -1085,8 +1562,27 @@ public class View extends JFrame {
 	}
 
 	public void completeCube() {
-		cube = cubeController.completeCube();
+		long start = System.currentTimeMillis();
+		solvingAlgorithm.setText(cubeController.completeCube().toString());
+		notification.setText("Duration: " + String.valueOf((System.currentTimeMillis() - start) / 1000) + " sec");
 		showCubeView();
+	}
+
+	public void scramble2() {
+		int i = 0;
+		try {
+			do {
+				rotateMapping.get(1 + (int) (Math.random() * 21)).rotate();
+				if (i++ % 10000 == 0) {
+					System.out.println(i);
+				}
+			} while (!cubeController.cubeCompleted());
+
+			System.out.println("Solved");
+
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void scramble() {

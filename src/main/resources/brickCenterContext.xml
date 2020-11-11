@@ -5,27 +5,27 @@
 	default-lazy-init="true">
 
 	<bean id="brickW" class="cube.BrickCenter">
-		<constructor-arg value="w" name="color1" />
+		<constructor-arg value="WHITE" name="color1" />
 	</bean>
 
 	<bean id="brickR" class="cube.BrickCenter">
-		<constructor-arg value="r" name="color1" />
+		<constructor-arg value="RED" name="color1" />
 	</bean>
 
 	<bean id="brickG" class="cube.BrickCenter">
-		<constructor-arg value="g" name="color1" />
+		<constructor-arg value="GREEN" name="color1" />
 	</bean>
 
 	<bean id="brickO" class="cube.BrickCenter">
-		<constructor-arg value="o" name="color1" />
+		<constructor-arg value="ORANGE" name="color1" />
 	</bean>
 
 	<bean id="brickB" class="cube.BrickCenter">
-		<constructor-arg value="b" name="color1" />
+		<constructor-arg value="BLUE" name="color1" />
 	</bean>
 
 	<bean id="brickY" class="cube.BrickCenter">
-		<constructor-arg value="y" name="color1" />
+		<constructor-arg value="YELLOW" name="color1" />
 	</bean>
 
 </beans>
