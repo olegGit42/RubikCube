@@ -519,6 +519,10 @@ public class Solver {
 
 	private boolean solvePLL_2(String[] algorithm) throws CannotSolveException {
 
+		if (algorithm[0].equals("-")) {
+			algorithm = null;
+		}
+
 		boolean found = false;
 
 		for (String[] u : iniMapping.get("U")) {
@@ -557,8 +561,8 @@ public class Solver {
 
 				if (doAlgorithm(cubeClone1, u))
 					algorithmBuffer.addAll(Arrays.asList(u));
-				doAlgorithm(cubeClone1, algorithm);
-				algorithmBuffer.addAll(Arrays.asList(algorithm));
+				if (doAlgorithm(cubeClone1, algorithm))
+					algorithmBuffer.addAll(Arrays.asList(algorithm));
 				algorithmBuffer.addAll(baseOrientation(cubeClone1));
 				if (doAlgorithm(cubeClone1, u_end))
 					algorithmBuffer.addAll(Arrays.asList(u_end));
