@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import lombok.Data;
+import view.View;
 
 @Data
 @Component
@@ -20,6 +21,11 @@ public class CubeController {
 	@Autowired
 	private Cube cube;
 	public static Map<String, Rotate> rotationMapping;
+
+	private Cube cubeSolved;
+	private List<String> solvingAlgorithm = new ArrayList<>();
+	private int nextMoveIndex = 0;
+	private boolean isNext = true;
 
 	{
 		rotationMapping = new HashMap<>();
@@ -163,63 +169,107 @@ public class CubeController {
 
 		d.changeBrickColor(1, Brick.Color.YELLOW);
 		d.changeBrickColor(2, Brick.Color.GREEN);
-		d.changeBrickColor(3, Brick.Color.ORANGE);
-		d.changeBrickColor(4, Brick.Color.YELLOW);
-		d.changeBrickColor(5, Brick.Color.GREEN);
-		d.changeBrickColor(6, Brick.Color.RED);
-		d.changeBrickColor(7, Brick.Color.GREEN);
+		d.changeBrickColor(3, Brick.Color.WHITE);
+		d.changeBrickColor(4, Brick.Color.GREEN);
+		d.changeBrickColor(5, Brick.Color.RED);
+		d.changeBrickColor(6, Brick.Color.WHITE);
+		d.changeBrickColor(7, Brick.Color.YELLOW);
 		d.changeBrickColor(8, Brick.Color.YELLOW);
-		d.changeBrickColor(9, Brick.Color.BLUE);
+		d.changeBrickColor(9, Brick.Color.WHITE);
 
-		u.changeBrickColor(1, Brick.Color.WHITE);
-		u.changeBrickColor(2, Brick.Color.RED);
-		u.changeBrickColor(3, Brick.Color.YELLOW);
-		u.changeBrickColor(4, Brick.Color.YELLOW);
-		u.changeBrickColor(5, Brick.Color.BLUE);
+		u.changeBrickColor(1, Brick.Color.YELLOW);
+		u.changeBrickColor(2, Brick.Color.BLUE);
+		u.changeBrickColor(3, Brick.Color.RED);
+		u.changeBrickColor(4, Brick.Color.ORANGE);
+		u.changeBrickColor(5, Brick.Color.ORANGE);
 		u.changeBrickColor(6, Brick.Color.BLUE);
 		u.changeBrickColor(7, Brick.Color.YELLOW);
-		u.changeBrickColor(8, Brick.Color.WHITE);
+		u.changeBrickColor(8, Brick.Color.RED);
 		u.changeBrickColor(9, Brick.Color.ORANGE);
 
-		f.changeBrickColor(1, Brick.Color.BLUE);
+		f.changeBrickColor(1, Brick.Color.ORANGE);
 		f.changeBrickColor(2, Brick.Color.GREEN);
 		f.changeBrickColor(3, Brick.Color.WHITE);
 		f.changeBrickColor(4, Brick.Color.YELLOW);
-		f.changeBrickColor(5, Brick.Color.YELLOW);
-		f.changeBrickColor(6, Brick.Color.WHITE);
-		f.changeBrickColor(7, Brick.Color.BLUE);
-		f.changeBrickColor(8, Brick.Color.ORANGE);
-		f.changeBrickColor(9, Brick.Color.WHITE);
+		f.changeBrickColor(5, Brick.Color.GREEN);
+		f.changeBrickColor(6, Brick.Color.BLUE);
+		f.changeBrickColor(7, Brick.Color.RED);
+		f.changeBrickColor(8, Brick.Color.YELLOW);
+		f.changeBrickColor(9, Brick.Color.RED);
 
-		b.changeBrickColor(1, Brick.Color.GREEN);
-		b.changeBrickColor(2, Brick.Color.BLUE);
-		b.changeBrickColor(3, Brick.Color.GREEN);
-		b.changeBrickColor(4, Brick.Color.WHITE);
-		b.changeBrickColor(5, Brick.Color.WHITE);
+		b.changeBrickColor(1, Brick.Color.WHITE);
+		b.changeBrickColor(2, Brick.Color.WHITE);
+		b.changeBrickColor(3, Brick.Color.ORANGE);
+		b.changeBrickColor(4, Brick.Color.RED);
+		b.changeBrickColor(5, Brick.Color.BLUE);
 		b.changeBrickColor(6, Brick.Color.WHITE);
-		b.changeBrickColor(7, Brick.Color.WHITE);
+		b.changeBrickColor(7, Brick.Color.ORANGE);
 		b.changeBrickColor(8, Brick.Color.BLUE);
-		b.changeBrickColor(9, Brick.Color.YELLOW);
+		b.changeBrickColor(9, Brick.Color.RED);
 
-		l.changeBrickColor(1, Brick.Color.RED);
-		l.changeBrickColor(2, Brick.Color.ORANGE);
-		l.changeBrickColor(3, Brick.Color.ORANGE);
-		l.changeBrickColor(4, Brick.Color.RED);
-		l.changeBrickColor(5, Brick.Color.RED);
-		l.changeBrickColor(6, Brick.Color.GREEN);
-		l.changeBrickColor(7, Brick.Color.ORANGE);
-		l.changeBrickColor(8, Brick.Color.RED);
-		l.changeBrickColor(9, Brick.Color.RED);
+		l.changeBrickColor(1, Brick.Color.BLUE);
+		l.changeBrickColor(2, Brick.Color.GREEN);
+		l.changeBrickColor(3, Brick.Color.GREEN);
+		l.changeBrickColor(4, Brick.Color.ORANGE);
+		l.changeBrickColor(5, Brick.Color.YELLOW);
+		l.changeBrickColor(6, Brick.Color.ORANGE);
+		l.changeBrickColor(7, Brick.Color.BLUE);
+		l.changeBrickColor(8, Brick.Color.WHITE);
+		l.changeBrickColor(9, Brick.Color.GREEN);
 
 		r.changeBrickColor(1, Brick.Color.BLUE);
-		r.changeBrickColor(2, Brick.Color.ORANGE);
-		r.changeBrickColor(3, Brick.Color.RED);
-		r.changeBrickColor(4, Brick.Color.BLUE);
-		r.changeBrickColor(5, Brick.Color.ORANGE);
-		r.changeBrickColor(6, Brick.Color.ORANGE);
+		r.changeBrickColor(2, Brick.Color.RED);
+		r.changeBrickColor(3, Brick.Color.BLUE);
+		r.changeBrickColor(4, Brick.Color.ORANGE);
+		r.changeBrickColor(5, Brick.Color.WHITE);
+		r.changeBrickColor(6, Brick.Color.YELLOW);
 		r.changeBrickColor(7, Brick.Color.GREEN);
-		r.changeBrickColor(8, Brick.Color.GREEN);
-		r.changeBrickColor(9, Brick.Color.RED);
+		r.changeBrickColor(8, Brick.Color.RED);
+		r.changeBrickColor(9, Brick.Color.GREEN);
+
+		/*
+		 * d.changeBrickColor(1, Brick.Color.YELLOW); d.changeBrickColor(2,
+		 * Brick.Color.GREEN); d.changeBrickColor(3, Brick.Color.ORANGE);
+		 * d.changeBrickColor(4, Brick.Color.YELLOW); d.changeBrickColor(5,
+		 * Brick.Color.GREEN); d.changeBrickColor(6, Brick.Color.RED);
+		 * d.changeBrickColor(7, Brick.Color.GREEN); d.changeBrickColor(8,
+		 * Brick.Color.YELLOW); d.changeBrickColor(9, Brick.Color.BLUE);
+		 * 
+		 * u.changeBrickColor(1, Brick.Color.WHITE); u.changeBrickColor(2,
+		 * Brick.Color.RED); u.changeBrickColor(3, Brick.Color.YELLOW);
+		 * u.changeBrickColor(4, Brick.Color.YELLOW); u.changeBrickColor(5,
+		 * Brick.Color.BLUE); u.changeBrickColor(6, Brick.Color.BLUE);
+		 * u.changeBrickColor(7, Brick.Color.YELLOW); u.changeBrickColor(8,
+		 * Brick.Color.WHITE); u.changeBrickColor(9, Brick.Color.ORANGE);
+		 * 
+		 * f.changeBrickColor(1, Brick.Color.BLUE); f.changeBrickColor(2,
+		 * Brick.Color.GREEN); f.changeBrickColor(3, Brick.Color.WHITE);
+		 * f.changeBrickColor(4, Brick.Color.YELLOW); f.changeBrickColor(5,
+		 * Brick.Color.YELLOW); f.changeBrickColor(6, Brick.Color.WHITE);
+		 * f.changeBrickColor(7, Brick.Color.BLUE); f.changeBrickColor(8,
+		 * Brick.Color.ORANGE); f.changeBrickColor(9, Brick.Color.WHITE);
+		 * 
+		 * b.changeBrickColor(1, Brick.Color.GREEN); b.changeBrickColor(2,
+		 * Brick.Color.BLUE); b.changeBrickColor(3, Brick.Color.GREEN);
+		 * b.changeBrickColor(4, Brick.Color.WHITE); b.changeBrickColor(5,
+		 * Brick.Color.WHITE); b.changeBrickColor(6, Brick.Color.WHITE);
+		 * b.changeBrickColor(7, Brick.Color.WHITE); b.changeBrickColor(8,
+		 * Brick.Color.BLUE); b.changeBrickColor(9, Brick.Color.YELLOW);
+		 * 
+		 * l.changeBrickColor(1, Brick.Color.RED); l.changeBrickColor(2,
+		 * Brick.Color.ORANGE); l.changeBrickColor(3, Brick.Color.ORANGE);
+		 * l.changeBrickColor(4, Brick.Color.RED); l.changeBrickColor(5,
+		 * Brick.Color.RED); l.changeBrickColor(6, Brick.Color.GREEN);
+		 * l.changeBrickColor(7, Brick.Color.ORANGE); l.changeBrickColor(8,
+		 * Brick.Color.RED); l.changeBrickColor(9, Brick.Color.RED);
+		 * 
+		 * r.changeBrickColor(1, Brick.Color.BLUE); r.changeBrickColor(2,
+		 * Brick.Color.ORANGE); r.changeBrickColor(3, Brick.Color.RED);
+		 * r.changeBrickColor(4, Brick.Color.BLUE); r.changeBrickColor(5,
+		 * Brick.Color.ORANGE); r.changeBrickColor(6, Brick.Color.ORANGE);
+		 * r.changeBrickColor(7, Brick.Color.GREEN); r.changeBrickColor(8,
+		 * Brick.Color.GREEN); r.changeBrickColor(9, Brick.Color.RED);
+		 */
 
 		/*
 		 * d.changeBrickColor(1, Brick.Color.); d.changeBrickColor(2, Brick.Color.);
@@ -256,6 +306,7 @@ public class CubeController {
 		 * r.changeBrickColor(3, Brick.Color.); r.changeBrickColor(4, Brick.Color.);
 		 * r.changeBrickColor(5, Brick.Color.); r.changeBrickColor(6, Brick.Color.);
 		 * r.changeBrickColor(7, Brick.Color.); r.changeBrickColor(8, Brick.Color.);
+		 * r.changeBrickColor(9, Brick.Color.);
 		 */
 
 	}
@@ -276,24 +327,148 @@ public class CubeController {
 
 	// TODO completeCube()
 	public List<String> completeCube() {
-		/*
-		 * cube = RubickMain.appContext.getBean("cube", Cube.class); X(); Z2();
-		 */
-
-		List<String> solveAlgorithm = null;
 
 		try {
-			solveAlgorithm = Solver.getNewInstance(cube).solve();
-			// solveAlgorithm = Solver.getNewInstance(cube).solveCross();
-			// solveAlgorithm = Solver.getNewInstance(cube).solveF2L();
-			doAlgorithm(solveAlgorithm);
+			solvingAlgorithm.clear();
+			solvingAlgorithm.addAll(Solver.getNewInstance(cube).solve());
+			nextMoveIndex = 0;
+			isNext = true;
+
+			cubeSolved = cube.clone();
 		} catch (CannotSolveException e) {
 			e.printStackTrace();
-			solveAlgorithm = new ArrayList<>();
-			solveAlgorithm.add(e.getMessage());
+			solvingAlgorithm = new ArrayList<>();
+			solvingAlgorithm.add(e.getMessage());
 		}
 
-		return solveAlgorithm;
+		return solvingAlgorithm;
+	}
+
+	public String showSolvingAlgorithm() {
+
+		String alg = "";
+		int i = 0;
+		for (String move : solvingAlgorithm) {
+
+			if (i == nextMoveIndex) {
+
+				if (isNext) {
+					move = ">>>> " + move;
+				} else {
+					move = move + " <<<<";
+				}
+
+			}
+
+			alg += " " + move;
+			i++;
+		}
+
+		return alg.trim();
+	}
+
+	public void doSolve(boolean isNext) {
+		if (cubeSolved != null && !solvingAlgorithm.isEmpty() && solvingAlgorithm.size() > 1) {
+			boolean notEquals = isNext != this.isNext;
+
+			this.isNext = isNext;
+
+			if (notEquals) {
+				incrementNextMoveIndex(0);
+			}
+			while (this.isNext == isNext) {
+				doSolveMove(isNext);
+			}
+		}
+	}
+
+	public void doSolveMove(boolean isNext) {
+
+		if (cubeSolved != null && !solvingAlgorithm.isEmpty()) {
+			boolean notEquals = isNext != this.isNext;
+
+			this.isNext = isNext;
+
+			if (notEquals) {
+				incrementNextMoveIndex(0);
+				return;
+			}
+
+			cube = cubeSolved;
+			View.cube = cube;
+
+			if (isNext) {
+				doAlgorithm(solvingAlgorithm.get(nextMoveIndex));
+			} else {
+				doAlgorithm(solvingAlgorithm.get(nextMoveIndex));
+				doAlgorithm(solvingAlgorithm.get(nextMoveIndex));
+				doAlgorithm(solvingAlgorithm.get(nextMoveIndex));
+			}
+
+			cubeSolved = cube.clone();
+
+			incrementNextMoveIndex(0);
+
+		}
+
+	}
+
+	/**
+	 * @param direction -1 - begin, 0 - one step, 1 - end
+	 */
+	public void incrementNextMoveIndex(int direction) {
+
+		boolean hasNext = true;
+		boolean hasPrev = true;
+
+		try {
+			solvingAlgorithm.get(nextMoveIndex + 1);
+		} catch (Exception e) {
+			hasNext = false;
+		}
+
+		try {
+			solvingAlgorithm.get(nextMoveIndex - 1);
+		} catch (Exception e) {
+			hasPrev = false;
+		}
+
+		switch (direction) {
+		case -1:
+			nextMoveIndex = 0;
+			isNext = true;
+
+			break;
+		case 0:
+
+			if (isNext) {
+
+				if (hasNext) {
+					nextMoveIndex++;
+				} else {
+					isNext = false;
+				}
+
+			} else {
+
+				if (hasPrev) {
+					nextMoveIndex--;
+				} else {
+					isNext = true;
+				}
+
+			}
+
+			break;
+		case 1:
+			nextMoveIndex = solvingAlgorithm.size() - 1;
+			isNext = false;
+
+			break;
+		default:
+			break;
+		}
+
 	}
 
 	public boolean sideCompleted(Side side) {

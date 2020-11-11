@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -809,8 +810,9 @@ public class View extends JFrame {
 			}
 		});
 
+		// TODO btnSolve
 		btnSolve = new JButton("Solve");
-		btnSolve.setBounds(807, 354, 117, 23);
+		btnSolve.setBounds(824, 354, 100, 23);
 		btnSolve.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// scramble();
@@ -1411,8 +1413,74 @@ public class View extends JFrame {
 				scramble();
 			}
 		});
-		btnScramble.setBounds(559, 354, 117, 23);
+		btnScramble.setBounds(559, 354, 100, 23);
 		contentPane.add(btnScramble);
+
+		// TODO JButton("<<")
+		JButton btnMoveBegin = new JButton("<<");
+		btnMoveBegin.setMargin(new Insets(0, 0, 0, 0));
+		btnMoveBegin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cubeController.doSolve(false);
+				solvingAlgorithm.setText(cubeController.showSolvingAlgorithm());
+				notification.setText(cubeController.getSolvingAlgorithm().isEmpty() ? ""
+						: cubeController.getSolvingAlgorithm().get(cubeController.getNextMoveIndex()));
+
+				showCubeView();
+			}
+		});
+		btnMoveBegin.setBounds(664, 354, 42, 23);
+		contentPane.add(btnMoveBegin);
+
+		JButton btnMovePrev = new JButton("<");
+		btnMovePrev.setMargin(new Insets(0, 0, 0, 0));
+		btnMovePrev.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cubeController.doSolveMove(false);
+				solvingAlgorithm.setText(cubeController.showSolvingAlgorithm());
+				notification.setText(cubeController.getSolvingAlgorithm().isEmpty() ? ""
+						: ((cubeController.isNext() ? "" : "reverted ")
+								+ cubeController.getSolvingAlgorithm().get(cubeController.getNextMoveIndex())));
+
+				showCubeView();
+			}
+		});
+		btnMovePrev.setBounds(706, 354, 35, 23);
+		contentPane.add(btnMovePrev);
+
+		JButton btnMoveNext = new JButton(">");
+		btnMoveNext.setMargin(new Insets(0, 0, 0, 0));
+		btnMoveNext.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cubeController.doSolveMove(true);
+				solvingAlgorithm.setText(cubeController.showSolvingAlgorithm());
+				notification.setText(cubeController.getSolvingAlgorithm().isEmpty() ? ""
+						: ((cubeController.isNext() ? "" : "reverted ")
+								+ cubeController.getSolvingAlgorithm().get(cubeController.getNextMoveIndex())));
+
+				cube = cubeController.getCube();
+				showCubeView();
+			}
+		});
+		btnMoveNext.setBounds(741, 354, 35, 23);
+		contentPane.add(btnMoveNext);
+
+		JButton btnMoveEnd = new JButton(">>");
+		btnMoveEnd.setMargin(new Insets(0, 0, 0, 0));
+		btnMoveEnd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cubeController.doSolve(true);
+				solvingAlgorithm.setText(cubeController.showSolvingAlgorithm());
+				notification.setText(cubeController.getSolvingAlgorithm().isEmpty() ? ""
+						: ((cubeController.isNext() ? "" : "reverted ")
+								+ cubeController.getSolvingAlgorithm().get(cubeController.getNextMoveIndex())));
+
+				cube = cubeController.getCube();
+				showCubeView();
+			}
+		});
+		btnMoveEnd.setBounds(778, 354, 42, 23);
+		contentPane.add(btnMoveEnd);
 
 		JButton btnReset = new JButton("Reset");
 		btnReset.addActionListener(new ActionListener() {
@@ -1561,10 +1629,12 @@ public class View extends JFrame {
 		}
 	}
 
+	// TODO completeCube()
 	public void completeCube() {
-		long start = System.currentTimeMillis();
-		solvingAlgorithm.setText(cubeController.completeCube().toString());
-		notification.setText("Duration: " + String.valueOf((System.currentTimeMillis() - start) / 1000) + " sec");
+		cubeController.completeCube();
+		solvingAlgorithm.setText(cubeController.showSolvingAlgorithm());
+		notification.setText(cubeController.getSolvingAlgorithm().isEmpty() ? ""
+				: cubeController.getSolvingAlgorithm().get(cubeController.getNextMoveIndex()));
 		showCubeView();
 	}
 

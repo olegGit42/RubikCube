@@ -21,7 +21,7 @@ public class BrickCenter implements Brick {
 	@Override
 	public Color changeColor(int colorNum, Color color) {
 		if (color == null) {
-			color1 = Brick.getNextColor(color1);
+			// color1 = Brick.getNextColor(color1);
 		} else {
 			color1 = color;
 		}
