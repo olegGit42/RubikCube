@@ -158,7 +158,7 @@ public class Solver {
 				}
 
 				if (notFound)
-					throw new CannotSolveException();
+					throw new CannotSolveException("Cross 1 step error");
 			}
 
 			m = BrickStateChecker.isCrossBricksRightPositioned(cubeClone1);
@@ -189,7 +189,7 @@ public class Solver {
 				}
 
 				if (notFound)
-					throw new CannotSolveException();
+					throw new CannotSolveException("Cross 2 step error");
 
 			}
 
@@ -226,7 +226,7 @@ public class Solver {
 					}
 
 					if (notFound)
-						throw new CannotSolveException();
+						throw new CannotSolveException("Cross 3 step error");
 				}
 			}
 
@@ -266,7 +266,7 @@ public class Solver {
 					}
 
 					if (notFound)
-						throw new CannotSolveException("Cross error.");
+						throw new CannotSolveException("Cross 4 step error");
 				}
 			}
 		}
@@ -290,7 +290,7 @@ public class Solver {
 			}
 
 			if (notFound)
-				throw new CannotSolveException("Right cross orientation error.");
+				throw new CannotSolveException("Right cross orientation error");
 		}
 
 		return algorithmBuffer;
@@ -326,7 +326,7 @@ public class Solver {
 				}
 
 				if (!found)
-					throw new CannotSolveException("F2L error.");
+					throw new CannotSolveException("F2L error");
 
 			}
 		}
@@ -440,7 +440,7 @@ public class Solver {
 			}
 
 			if (!found)
-				throw new CannotSolveException("OLL error.");
+				throw new CannotSolveException("OLL error");
 
 		}
 
@@ -510,7 +510,7 @@ public class Solver {
 			}
 
 			if (!found)
-				throw new CannotSolveException("OLL error.");
+				throw new CannotSolveException("PLL error");
 
 		}
 

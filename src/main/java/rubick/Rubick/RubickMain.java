@@ -10,9 +10,14 @@ import org.ini4j.Wini;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import cube.Cube;
 import cube.CubeController;
+import cube.CubeJSON;
+import cube.ReadCubeException;
+import cube.WriteCubeException;
 import view.View;
 
+@SuppressWarnings("unused")
 public class RubickMain {
 	public static ApplicationContext appContext = new ClassPathXmlApplicationContext("appContext.xml");
 
@@ -43,7 +48,9 @@ public class RubickMain {
 
 			if (console) {
 				// testCube();
-				testIniReader();
+				// testIniReader();
+
+				testCubeJSON();
 			}
 
 		} catch (Exception e) {
@@ -52,11 +59,40 @@ public class RubickMain {
 
 	}
 
-	@SuppressWarnings("unused")
+	private static void testCubeJSON() {
+		try {
+			CubeJSON cubeJSON = CubeJSON.getNewInstance();
+
+			CubeController cc = CubeController.getNewInstanceWithCube();
+			Cube cube = cc.getCube();
+
+			cc.Br();
+			cc.R();
+			cc.F();
+			cc.Lr();
+
+			String cj = cubeJSON.getJSONFromCube(cube);
+
+			System.out.println(cj);
+
+			CubeController cc2 = CubeController.getNewInstanceWithCube();
+			Cube cube2 = cc2.getCube();
+
+			cc2.showCube();
+
+			cubeJSON.getCubeFromJSON(cj, cube2);
+
+			cc2.showCube();
+
+		} catch (WriteCubeException | IllegalArgumentException | IllegalAccessException | ReadCubeException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private static void testCube() {
 		try {
 
-			CubeController cube = appContext.getBean("cubeController", CubeController.class);
+			CubeController cube = CubeController.getNewInstanceWithCube();
 
 			int millis = 50;
 			int quantity = 3;

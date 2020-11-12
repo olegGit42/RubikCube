@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import lombok.Data;
+import rubick.rubick.RubickMain;
 
 @Data
 @Component
@@ -47,6 +48,10 @@ public class Cube implements Cloneable {
 	public Cube clone() {
 		return new Cube(sideFront.clone(), sideDown.clone(), sideLeft.clone(), sideUp.clone(), sideRight.clone(),
 				sideBack.clone());
+	}
+
+	public static Cube getNewInstance() {
+		return RubickMain.appContext.getBean("cube", Cube.class);
 	}
 
 }

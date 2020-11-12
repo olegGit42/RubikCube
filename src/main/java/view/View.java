@@ -23,8 +23,11 @@ import javax.swing.border.LineBorder;
 import cube.Brick;
 import cube.Cube;
 import cube.CubeController;
+import cube.CubeJSON;
+import cube.ReadCubeException;
 import cube.Rotate;
 import cube.Side;
+import cube.WriteCubeException;
 import rubick.rubick.RubickMain;
 
 public class View extends JFrame {
@@ -1415,6 +1418,38 @@ public class View extends JFrame {
 		});
 		btnScramble.setBounds(559, 354, 100, 23);
 		contentPane.add(btnScramble);
+
+		JButton btnReadCube = new JButton("Read cube");
+		btnReadCube.setMargin(new Insets(0, 0, 0, 0));
+		btnReadCube.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					CubeJSON.getNewInstance().getCubeFromJSON(solvingAlgorithm.getText().trim(), cube);
+					notification.setText(null);
+					showCubeView();
+				} catch (ReadCubeException e1) {
+					e1.printStackTrace();
+					notification.setText(e1.getMessage());
+				}
+			}
+		});
+		btnReadCube.setBounds(278, 354, 100, 23);
+		contentPane.add(btnReadCube);
+
+		JButton btnWriteCube = new JButton("Write cube");
+		btnWriteCube.setMargin(new Insets(0, 0, 0, 0));
+		btnWriteCube.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					solvingAlgorithm.setText(CubeJSON.getNewInstance().getJSONFromCube(cube));
+				} catch (WriteCubeException e1) {
+					e1.printStackTrace();
+					notification.setText(e1.getMessage());
+				}
+			}
+		});
+		btnWriteCube.setBounds(278, 330, 100, 23);
+		contentPane.add(btnWriteCube);
 
 		// TODO JButton("<<")
 		JButton btnMoveBegin = new JButton("<<");

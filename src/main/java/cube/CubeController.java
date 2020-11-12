@@ -1,5 +1,6 @@
 package cube;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import lombok.Data;
+import rubick.rubick.RubickMain;
 import view.View;
 
 @Data
@@ -107,6 +109,10 @@ public class CubeController {
 		this.cube = cube;
 	}
 
+	public static CubeController getNewInstanceWithCube() {
+		return RubickMain.appContext.getBean("cubeController", CubeController.class);
+	}
+
 	public static CubeController getNewInstance() {
 		return new CubeController();
 	}
@@ -149,165 +155,22 @@ public class CubeController {
 
 	public void resetCube() {
 
-		cube.getSideDown().setSideColor(Brick.Color.WHITE);
-		cube.getSideUp().setSideColor(Brick.Color.YELLOW);
-		cube.getSideFront().setSideColor(Brick.Color.RED);
-		cube.getSideBack().setSideColor(Brick.Color.ORANGE);
-		cube.getSideLeft().setSideColor(Brick.Color.BLUE);
-		cube.getSideRight().setSideColor(Brick.Color.GREEN);
+		try {
+			File cubeFile = new File("reset_cube.json");
 
-		// resetForTest();
-	}
+			if (!cubeFile.exists())
+				cubeFile = new File(RubickMain.class.getClassLoader().getResource("solved_cube.json").toURI());
 
-	public void resetForTest() {
-		Side d = cube.getSideDown();
-		Side u = cube.getSideUp();
-		Side f = cube.getSideFront();
-		Side b = cube.getSideBack();
-		Side l = cube.getSideLeft();
-		Side r = cube.getSideRight();
+			CubeJSON.getNewInstance().getCubeFromJSON(cubeFile, cube);
 
-		d.changeBrickColor(1, Brick.Color.YELLOW);
-		d.changeBrickColor(2, Brick.Color.GREEN);
-		d.changeBrickColor(3, Brick.Color.WHITE);
-		d.changeBrickColor(4, Brick.Color.GREEN);
-		d.changeBrickColor(5, Brick.Color.RED);
-		d.changeBrickColor(6, Brick.Color.WHITE);
-		d.changeBrickColor(7, Brick.Color.YELLOW);
-		d.changeBrickColor(8, Brick.Color.YELLOW);
-		d.changeBrickColor(9, Brick.Color.WHITE);
-
-		u.changeBrickColor(1, Brick.Color.YELLOW);
-		u.changeBrickColor(2, Brick.Color.BLUE);
-		u.changeBrickColor(3, Brick.Color.RED);
-		u.changeBrickColor(4, Brick.Color.ORANGE);
-		u.changeBrickColor(5, Brick.Color.ORANGE);
-		u.changeBrickColor(6, Brick.Color.BLUE);
-		u.changeBrickColor(7, Brick.Color.YELLOW);
-		u.changeBrickColor(8, Brick.Color.RED);
-		u.changeBrickColor(9, Brick.Color.ORANGE);
-
-		f.changeBrickColor(1, Brick.Color.ORANGE);
-		f.changeBrickColor(2, Brick.Color.GREEN);
-		f.changeBrickColor(3, Brick.Color.WHITE);
-		f.changeBrickColor(4, Brick.Color.YELLOW);
-		f.changeBrickColor(5, Brick.Color.GREEN);
-		f.changeBrickColor(6, Brick.Color.BLUE);
-		f.changeBrickColor(7, Brick.Color.RED);
-		f.changeBrickColor(8, Brick.Color.YELLOW);
-		f.changeBrickColor(9, Brick.Color.RED);
-
-		b.changeBrickColor(1, Brick.Color.WHITE);
-		b.changeBrickColor(2, Brick.Color.WHITE);
-		b.changeBrickColor(3, Brick.Color.ORANGE);
-		b.changeBrickColor(4, Brick.Color.RED);
-		b.changeBrickColor(5, Brick.Color.BLUE);
-		b.changeBrickColor(6, Brick.Color.WHITE);
-		b.changeBrickColor(7, Brick.Color.ORANGE);
-		b.changeBrickColor(8, Brick.Color.BLUE);
-		b.changeBrickColor(9, Brick.Color.RED);
-
-		l.changeBrickColor(1, Brick.Color.BLUE);
-		l.changeBrickColor(2, Brick.Color.GREEN);
-		l.changeBrickColor(3, Brick.Color.GREEN);
-		l.changeBrickColor(4, Brick.Color.ORANGE);
-		l.changeBrickColor(5, Brick.Color.YELLOW);
-		l.changeBrickColor(6, Brick.Color.ORANGE);
-		l.changeBrickColor(7, Brick.Color.BLUE);
-		l.changeBrickColor(8, Brick.Color.WHITE);
-		l.changeBrickColor(9, Brick.Color.GREEN);
-
-		r.changeBrickColor(1, Brick.Color.BLUE);
-		r.changeBrickColor(2, Brick.Color.RED);
-		r.changeBrickColor(3, Brick.Color.BLUE);
-		r.changeBrickColor(4, Brick.Color.ORANGE);
-		r.changeBrickColor(5, Brick.Color.WHITE);
-		r.changeBrickColor(6, Brick.Color.YELLOW);
-		r.changeBrickColor(7, Brick.Color.GREEN);
-		r.changeBrickColor(8, Brick.Color.RED);
-		r.changeBrickColor(9, Brick.Color.GREEN);
-
-		/*
-		 * d.changeBrickColor(1, Brick.Color.YELLOW); d.changeBrickColor(2,
-		 * Brick.Color.GREEN); d.changeBrickColor(3, Brick.Color.ORANGE);
-		 * d.changeBrickColor(4, Brick.Color.YELLOW); d.changeBrickColor(5,
-		 * Brick.Color.GREEN); d.changeBrickColor(6, Brick.Color.RED);
-		 * d.changeBrickColor(7, Brick.Color.GREEN); d.changeBrickColor(8,
-		 * Brick.Color.YELLOW); d.changeBrickColor(9, Brick.Color.BLUE);
-		 * 
-		 * u.changeBrickColor(1, Brick.Color.WHITE); u.changeBrickColor(2,
-		 * Brick.Color.RED); u.changeBrickColor(3, Brick.Color.YELLOW);
-		 * u.changeBrickColor(4, Brick.Color.YELLOW); u.changeBrickColor(5,
-		 * Brick.Color.BLUE); u.changeBrickColor(6, Brick.Color.BLUE);
-		 * u.changeBrickColor(7, Brick.Color.YELLOW); u.changeBrickColor(8,
-		 * Brick.Color.WHITE); u.changeBrickColor(9, Brick.Color.ORANGE);
-		 * 
-		 * f.changeBrickColor(1, Brick.Color.BLUE); f.changeBrickColor(2,
-		 * Brick.Color.GREEN); f.changeBrickColor(3, Brick.Color.WHITE);
-		 * f.changeBrickColor(4, Brick.Color.YELLOW); f.changeBrickColor(5,
-		 * Brick.Color.YELLOW); f.changeBrickColor(6, Brick.Color.WHITE);
-		 * f.changeBrickColor(7, Brick.Color.BLUE); f.changeBrickColor(8,
-		 * Brick.Color.ORANGE); f.changeBrickColor(9, Brick.Color.WHITE);
-		 * 
-		 * b.changeBrickColor(1, Brick.Color.GREEN); b.changeBrickColor(2,
-		 * Brick.Color.BLUE); b.changeBrickColor(3, Brick.Color.GREEN);
-		 * b.changeBrickColor(4, Brick.Color.WHITE); b.changeBrickColor(5,
-		 * Brick.Color.WHITE); b.changeBrickColor(6, Brick.Color.WHITE);
-		 * b.changeBrickColor(7, Brick.Color.WHITE); b.changeBrickColor(8,
-		 * Brick.Color.BLUE); b.changeBrickColor(9, Brick.Color.YELLOW);
-		 * 
-		 * l.changeBrickColor(1, Brick.Color.RED); l.changeBrickColor(2,
-		 * Brick.Color.ORANGE); l.changeBrickColor(3, Brick.Color.ORANGE);
-		 * l.changeBrickColor(4, Brick.Color.RED); l.changeBrickColor(5,
-		 * Brick.Color.RED); l.changeBrickColor(6, Brick.Color.GREEN);
-		 * l.changeBrickColor(7, Brick.Color.ORANGE); l.changeBrickColor(8,
-		 * Brick.Color.RED); l.changeBrickColor(9, Brick.Color.RED);
-		 * 
-		 * r.changeBrickColor(1, Brick.Color.BLUE); r.changeBrickColor(2,
-		 * Brick.Color.ORANGE); r.changeBrickColor(3, Brick.Color.RED);
-		 * r.changeBrickColor(4, Brick.Color.BLUE); r.changeBrickColor(5,
-		 * Brick.Color.ORANGE); r.changeBrickColor(6, Brick.Color.ORANGE);
-		 * r.changeBrickColor(7, Brick.Color.GREEN); r.changeBrickColor(8,
-		 * Brick.Color.GREEN); r.changeBrickColor(9, Brick.Color.RED);
-		 */
-
-		/*
-		 * d.changeBrickColor(1, Brick.Color.); d.changeBrickColor(2, Brick.Color.);
-		 * d.changeBrickColor(3, Brick.Color.); d.changeBrickColor(4, Brick.Color.);
-		 * d.changeBrickColor(5, Brick.Color.); d.changeBrickColor(6, Brick.Color.);
-		 * d.changeBrickColor(7, Brick.Color.); d.changeBrickColor(8, Brick.Color.);
-		 * d.changeBrickColor(9, Brick.Color.);
-		 * 
-		 * u.changeBrickColor(1, Brick.Color.); u.changeBrickColor(2, Brick.Color.);
-		 * u.changeBrickColor(3, Brick.Color.); u.changeBrickColor(4, Brick.Color.);
-		 * u.changeBrickColor(5, Brick.Color.); u.changeBrickColor(6, Brick.Color.);
-		 * u.changeBrickColor(7, Brick.Color.); u.changeBrickColor(8, Brick.Color.);
-		 * u.changeBrickColor(9, Brick.Color.);
-		 * 
-		 * f.changeBrickColor(1, Brick.Color.); f.changeBrickColor(2,Brick.Color. );
-		 * f.changeBrickColor(3, Brick.Color.); f.changeBrickColor(4, Brick.Color.);
-		 * f.changeBrickColor(5, Brick.Color.); f.changeBrickColor(6, Brick.Color.);
-		 * f.changeBrickColor(7, Brick.Color.); f.changeBrickColor(8, Brick.Color.);
-		 * f.changeBrickColor(9, Brick.Color.);
-		 * 
-		 * b.changeBrickColor(1, Brick.Color.); b.changeBrickColor(2, Brick.Color.);
-		 * b.changeBrickColor(3, Brick.Color.); b.changeBrickColor(4, Brick.Color.);
-		 * b.changeBrickColor(5, Brick.Color.); b.changeBrickColor(6, Brick.Color.);
-		 * b.changeBrickColor(7, Brick.Color.); b.changeBrickColor(8, Brick.Color.);
-		 * b.changeBrickColor(9, Brick.Color.);
-		 * 
-		 * l.changeBrickColor(1, Brick.Color.); l.changeBrickColor(2, Brick.Color.);
-		 * l.changeBrickColor(3, Brick.Color.); l.changeBrickColor(4, Brick.Color.);
-		 * l.changeBrickColor(5, Brick.Color.); l.changeBrickColor(6, Brick.Color.);
-		 * l.changeBrickColor(7, Brick.Color.); l.changeBrickColor(8, Brick.Color.);
-		 * l.changeBrickColor(9, Brick.Color.);
-		 * 
-		 * r.changeBrickColor(1, Brick.Color.); r.changeBrickColor(2, Brick.Color.);
-		 * r.changeBrickColor(3, Brick.Color.); r.changeBrickColor(4, Brick.Color.);
-		 * r.changeBrickColor(5, Brick.Color.); r.changeBrickColor(6, Brick.Color.);
-		 * r.changeBrickColor(7, Brick.Color.); r.changeBrickColor(8, Brick.Color.);
-		 * r.changeBrickColor(9, Brick.Color.);
-		 */
+		} catch (Exception e) {
+			cube.getSideDown().setSideColor(Brick.Color.WHITE);
+			cube.getSideUp().setSideColor(Brick.Color.YELLOW);
+			cube.getSideFront().setSideColor(Brick.Color.RED);
+			cube.getSideBack().setSideColor(Brick.Color.ORANGE);
+			cube.getSideLeft().setSideColor(Brick.Color.BLUE);
+			cube.getSideRight().setSideColor(Brick.Color.GREEN);
+		}
 
 	}
 
@@ -337,8 +200,12 @@ public class CubeController {
 			cubeSolved = cube.clone();
 		} catch (CannotSolveException e) {
 			e.printStackTrace();
-			solvingAlgorithm = new ArrayList<>();
-			solvingAlgorithm.add(e.getMessage());
+			solvingAlgorithm.clear();
+			try {
+				solvingAlgorithm.add(e.getMessage() + "\n" + CubeJSON.getNewInstance().getJSONFromCube(cube));
+			} catch (WriteCubeException e1) {
+				solvingAlgorithm.add(e.getMessage());
+			}
 		}
 
 		return solvingAlgorithm;

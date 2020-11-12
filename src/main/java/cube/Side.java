@@ -86,6 +86,17 @@ public class Side implements Cloneable {
 		}
 	}
 
+	public Brick.Color[] getSideColors() {
+
+		Brick.Color[] sideColors = new Brick.Color[9];
+
+		for (int i = 0; i < sideColors.length; i++) {
+			sideColors[i] = getBrickColor(i + 1);
+		}
+
+		return sideColors;
+	}
+
 	public Brick.Color getBrickColor(int brickNum) {
 		switch (brickNum) {
 		case 1:
@@ -109,6 +120,14 @@ public class Side implements Cloneable {
 		default:
 			return null;
 		}
+	}
+
+	public void changeSideColors(Brick.Color[] sideColors) {
+
+		for (int i = 0; i < sideColors.length; i++) {
+			changeBrickColor(i + 1, sideColors[i]);
+		}
+
 	}
 
 	public Brick.Color changeBrickColor(int brickNum, Color color) {
