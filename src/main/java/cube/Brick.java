@@ -15,6 +15,6 @@ public interface Brick {
 	public Color changeColor(int colorNum, Color color);
 
 	public enum Color {
-		WHITE, BLUE, RED, GREEN, ORANGE, YELLOW
+		YELLOW, WHITE, GREEN, BLUE, RED, ORANGE
 	}
 }

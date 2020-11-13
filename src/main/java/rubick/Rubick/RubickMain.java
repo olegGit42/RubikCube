@@ -21,8 +21,7 @@ import view.View;
 public class RubickMain {
 	public static ApplicationContext appContext = new ClassPathXmlApplicationContext("appContext.xml");
 
-	public static boolean console = false; // false true
-	public static boolean view = true;
+	public static boolean view = true;// false true
 
 	public static void main(String[] args) {
 		try {
@@ -44,18 +43,73 @@ public class RubickMain {
 						}
 					}
 				});
-			}
-
-			if (console) {
+			} else {
 				// testCube();
 				// testIniReader();
+				// testCubeJSON();
 
-				testCubeJSON();
+				testNewCube();
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+	}
+
+	// TODO testNewCube()
+	private static void testNewCube() {
+
+		// Copy test 2
+		/*
+		 * CubeController cc = CubeController.getNewInstanceWithCube();
+		 * 
+		 * cc.showCube();
+		 * 
+		 * NewCube newCube = NewCube.getNewFullInstance(); newCube.R();
+		 * newCube.showCube();
+		 * 
+		 * newCube.copyTo(cc.getCube());
+		 * 
+		 * cc.showCube();
+		 */
+
+		// Copy test 1
+		/*
+		 * CubeController cc = CubeController.getNewInstanceWithCube();
+		 * 
+		 * cc.showCube();
+		 * 
+		 * NewCube newCube = NewCube.getNewFullInstance();
+		 * 
+		 * newCube.showCube();
+		 * 
+		 * NewCube newCube2 = NewCube.getNewEmptyInstance();
+		 * 
+		 * newCube2.showCube();
+		 * 
+		 * newCube2.copyFrom(newCube).showCube();
+		 */
+
+		// performance test
+		/*
+		 * NewCube newCube = NewCube.getNewFullInstance();
+		 * 
+		 * long start = System.currentTimeMillis();
+		 * 
+		 * for (int i = 0; i < 10000000; i++) { newCube.R(); newCube.U(); newCube.Rr();
+		 * newCube.Ur(); }
+		 * 
+		 * System.out.println("New cube time: " + (System.currentTimeMillis() - start) /
+		 * 1000 + " sec");
+		 * 
+		 * start = System.currentTimeMillis();
+		 * 
+		 * for (int i = 0; i < 10000; i++) { cc.R(); cc.U(); cc.Rr(); cc.Ur(); }
+		 * 
+		 * System.out.println("Old cube time: " + (System.currentTimeMillis() - start) /
+		 * 1000 + " sec");
+		 */
 
 	}
 
@@ -84,7 +138,7 @@ public class RubickMain {
 
 			cc2.showCube();
 
-		} catch (WriteCubeException | IllegalArgumentException | IllegalAccessException | ReadCubeException e) {
+		} catch (WriteCubeException | IllegalArgumentException | ReadCubeException e) {
 			e.printStackTrace();
 		}
 	}

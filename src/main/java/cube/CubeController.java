@@ -22,6 +22,7 @@ public class CubeController {
 
 	@Autowired
 	private Cube cube;
+	private NewCube newCube = NewCube.getNewEmptyInstance();
 	public static Map<String, Rotate> rotationMapping;
 
 	private Cube cubeSolved;
@@ -122,35 +123,24 @@ public class CubeController {
 	}
 
 	public boolean doAlgorithm(List<String> algorithmList) {
-		updateRotationMapping();
-		try {
-			algorithmList.forEach(rotation -> rotationMapping.get(rotation).rotate());
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+		newCube.copyFrom(this.cube);
+		boolean isDo = newCube.doAlgorithm(algorithmList);
+		newCube.copyTo(this.cube);
+		return isDo;
 	}
 
 	public boolean doAlgorithm(String[] algorithmArray) {
-		updateRotationMapping();
-		try {
-			for (String rotation : algorithmArray) {
-				rotationMapping.get(rotation).rotate();
-			}
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+		newCube.copyFrom(this.cube);
+		boolean isDo = newCube.doAlgorithm(algorithmArray);
+		newCube.copyTo(this.cube);
+		return isDo;
 	}
 
 	public boolean doAlgorithm(String rotation) {
-		updateRotationMapping();
-		try {
-			rotationMapping.get(rotation).rotate();
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+		newCube.copyFrom(this.cube);
+		boolean isDo = newCube.doAlgorithm(rotation);
+		newCube.copyTo(this.cube);
+		return isDo;
 	}
 
 	public void resetCube() {
@@ -174,7 +164,7 @@ public class CubeController {
 
 	}
 
-	public boolean cubeCompleted() throws IllegalArgumentException, IllegalAccessException {
+	public boolean cubeCompleted() {
 
 		/*
 		 * for (Field side : Cube.class.getDeclaredFields()) { if (!sideCompleted((Side)
@@ -201,11 +191,7 @@ public class CubeController {
 		} catch (CannotSolveException e) {
 			e.printStackTrace();
 			solvingAlgorithm.clear();
-			try {
-				solvingAlgorithm.add(e.getMessage() + "\n" + CubeJSON.getNewInstance().getJSONFromCube(cube));
-			} catch (WriteCubeException e1) {
-				solvingAlgorithm.add(e.getMessage());
-			}
+			solvingAlgorithm.add(e.getMessage());
 		}
 
 		return solvingAlgorithm;
@@ -353,7 +339,7 @@ public class CubeController {
 		showCube();
 	}
 
-	public void showCube() throws IllegalArgumentException, IllegalAccessException {
+	public void showCube() {
 		Side sideF, sideD, sideL, sideU, sideR, sideB;
 		sideF = cube.getSideFront();
 		sideD = cube.getSideDown();

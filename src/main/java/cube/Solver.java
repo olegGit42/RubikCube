@@ -12,20 +12,20 @@ import org.ini4j.Wini;
 
 import rubick.rubick.RubickMain;
 
-@SuppressWarnings("unused")
 public class Solver {
 
-	private Cube cube;
-	private Cube cubeClone1;
-	private Cube cubeClone2;
-	private CubeController cubeController = CubeController.getNewInstance();
+	private NewCube cube;
+	private NewCube cubeClone1;
+	private NewCube cubeClone2;
 	private List<String> solvingAlgorithm = new ArrayList<>();
 	private List<String> algorithmBuffer = new ArrayList<>();
 	private Map<String, List<String[]>> iniMapping = new HashMap<>();
 	private Wini ini;
 
-	public Solver(Cube cube) {
+	public Solver(NewCube cube) {
 		this.cube = cube;
+		this.cubeClone1 = NewCube.getNewEmptyInstance();
+		this.cubeClone2 = NewCube.getNewEmptyInstance();
 		try {
 			this.ini = new Wini(RubickMain.class.getClassLoader().getResource("algorithms.ini"));
 
@@ -61,7 +61,7 @@ public class Solver {
 			throw new CannotSolveException();
 		}
 
-		cubeClone1 = cube.clone();
+		cubeClone1.copyFrom(cube);
 		solvingAlgorithm.clear();
 		solvingAlgorithm.addAll(cross());
 		solvingAlgorithm.addAll(f2l());
@@ -74,32 +74,32 @@ public class Solver {
 	/**
 	 * Set white center side at the down
 	 */
-	private List<String> baseOrientation(Cube cube) throws CannotSolveException {
+	private List<String> baseOrientation(NewCube cube) throws CannotSolveException {
 
 		if (BrickStateChecker.isWhiteCenterDown(cube)) {
 			return new ArrayList<>();
 		}
 
-		Cube cubeClone;
+		NewCube cubeClone = NewCube.getNewEmptyInstance();
 
 		for (String[] algorithm : iniMapping.get("base_orientation")) {
 
-			cubeClone = cube.clone();
-			doAlgorithm(cubeClone, algorithm);
+			cubeClone.copyFrom(cube);
+			cubeClone.doAlgorithm(algorithm);
 
 			if (BrickStateChecker.isWhiteCenterDown(cubeClone)) {
-				doAlgorithm(cube, algorithm);
+				cube.doAlgorithm(algorithm);
 				return Arrays.asList(algorithm);
 			}
 		}
 
-		throw new CannotSolveException();
+		throw new CannotSolveException("Base orientation error");
 
 	}
 
-	private boolean isCorrectCross(Cube cube) {
+	private boolean isCorrectCross(NewCube cube) {
 
-		Map<Brick.Color, Boolean> m;
+		Map<NewCube.Color, Boolean> m;
 		String moveD = "D";
 
 		boolean isCorrectCross = false;
@@ -107,7 +107,7 @@ public class Solver {
 		cube = cube.clone();
 
 		for (int i = 0; i < 4; i++) {
-			doAlgorithm(cube, moveD);
+			cube.doAlgorithm(moveD);
 			m = BrickStateChecker.isCrossBricksRightPositioned(cube);
 			isCorrectCross = true;
 			for (boolean isCorrectPosition : m.values()) {
@@ -129,7 +129,7 @@ public class Solver {
 	private List<String> cross() throws CannotSolveException {
 		algorithmBuffer.clear();
 		algorithmBuffer.addAll(baseOrientation(cubeClone1));
-		Map<Brick.Color, Boolean> m;
+		Map<NewCube.Color, Boolean> m;
 
 		String moveD = "D";
 		String moveDr = "D'";
@@ -141,16 +141,16 @@ public class Solver {
 
 			// 1. Set WHITE-RED brick
 
-			if (!BrickStateChecker.isCrossBrick(cubeClone1, Brick.Color.RED)) {
+			if (!BrickStateChecker.isCrossBrick(cubeClone1, NewCube.Color.RED)) {
 
 				notFound = true;
 				for (String[] algorithm : iniMapping.get("cross")) {
 
-					cubeClone2 = cubeClone1.clone();
-					doAlgorithm(cubeClone2, algorithm);
+					cubeClone2.copyFrom(cubeClone1);
+					cubeClone2.doAlgorithm(algorithm);
 
-					if (BrickStateChecker.isCrossBrick(cubeClone2, Brick.Color.RED)) {
-						doAlgorithm(cubeClone1, algorithm);
+					if (BrickStateChecker.isCrossBrick(cubeClone2, NewCube.Color.RED)) {
+						cubeClone1.doAlgorithm(algorithm);
 						algorithmBuffer.addAll(Arrays.asList(algorithm));
 						notFound = false;
 						break;
@@ -165,9 +165,9 @@ public class Solver {
 
 			// 2. Set WHITE-GREEN brick
 
-			if (!m.get(Brick.Color.GREEN)) {
+			if (!m.get(NewCube.Color.GREEN)) {
 
-				doAlgorithm(cubeClone1, moveDr);
+				cubeClone1.doAlgorithm(moveDr);
 				algorithmBuffer.add(moveDr);
 
 				notFound = true;
@@ -177,11 +177,11 @@ public class Solver {
 					if (i == 0 || i == 1 || i == 2 || i == 24 || i == 25)
 						continue;
 
-					cubeClone2 = cubeClone1.clone();
-					doAlgorithm(cubeClone2, algorithm);
+					cubeClone2.copyFrom(cubeClone1);
+					cubeClone2.doAlgorithm(algorithm);
 
-					if (BrickStateChecker.isCrossBrick(cubeClone2, Brick.Color.GREEN)) {
-						doAlgorithm(cubeClone1, algorithm);
+					if (BrickStateChecker.isCrossBrick(cubeClone2, NewCube.Color.GREEN)) {
+						cubeClone1.doAlgorithm(algorithm);
 						algorithmBuffer.addAll(Arrays.asList(algorithm));
 						notFound = false;
 						break;
@@ -195,17 +195,17 @@ public class Solver {
 
 			// 3. Set WHITE-ORANGE brick
 
-			if (!m.get(Brick.Color.ORANGE)) {
+			if (!m.get(NewCube.Color.ORANGE)) {
 
-				if (m.get(Brick.Color.GREEN)) {
-					doAlgorithm(cubeClone1, moveD2);
+				if (m.get(NewCube.Color.GREEN)) {
+					cubeClone1.doAlgorithm(moveD2);
 					algorithmBuffer.add(moveD2);
 				} else {
-					doAlgorithm(cubeClone1, moveDr);
+					cubeClone1.doAlgorithm(moveDr);
 					algorithmBuffer.add(moveDr);
 				}
 
-				if (!BrickStateChecker.isCrossBrick(cubeClone1, Brick.Color.ORANGE)) {
+				if (!BrickStateChecker.isCrossBrick(cubeClone1, NewCube.Color.ORANGE)) {
 
 					notFound = true;
 					int i = -1;
@@ -214,11 +214,11 @@ public class Solver {
 						if (i == 0 || i == 1 || i == 2 || i == 24 || i == 25 || i == 22 || i == 23)
 							continue;
 
-						cubeClone2 = cubeClone1.clone();
-						doAlgorithm(cubeClone2, algorithm);
+						cubeClone2.copyFrom(cubeClone1);
+						cubeClone2.doAlgorithm(algorithm);
 
-						if (BrickStateChecker.isCrossBrick(cubeClone2, Brick.Color.ORANGE)) {
-							doAlgorithm(cubeClone1, algorithm);
+						if (BrickStateChecker.isCrossBrick(cubeClone2, NewCube.Color.ORANGE)) {
+							cubeClone1.doAlgorithm(algorithm);
 							algorithmBuffer.addAll(Arrays.asList(algorithm));
 							notFound = false;
 							break;
@@ -232,20 +232,20 @@ public class Solver {
 
 			// 4. Set WHITE-BLUE brick
 
-			if (!m.get(Brick.Color.BLUE)) {
+			if (!m.get(NewCube.Color.BLUE)) {
 
-				if (m.get(Brick.Color.GREEN) && m.get(Brick.Color.ORANGE)) {
-					doAlgorithm(cubeClone1, moveD);
+				if (m.get(NewCube.Color.GREEN) && m.get(NewCube.Color.ORANGE)) {
+					cubeClone1.doAlgorithm(moveD);
 					algorithmBuffer.add(moveD);
-				} else if (m.get(Brick.Color.ORANGE)) {
-					doAlgorithm(cubeClone1, moveD2);
+				} else if (m.get(NewCube.Color.ORANGE)) {
+					cubeClone1.doAlgorithm(moveD2);
 					algorithmBuffer.add(moveD2);
 				} else {
-					doAlgorithm(cubeClone1, moveDr);
+					cubeClone1.doAlgorithm(moveDr);
 					algorithmBuffer.add(moveDr);
 				}
 
-				if (!BrickStateChecker.isCrossBrick(cubeClone1, Brick.Color.BLUE)) {
+				if (!BrickStateChecker.isCrossBrick(cubeClone1, NewCube.Color.BLUE)) {
 
 					notFound = true;
 					int i = -1;
@@ -254,11 +254,11 @@ public class Solver {
 						if (i == 0 || i == 1 || i == 2 || i == 24 || i == 25 || i == 22 || i == 23 || i == 20 || i == 21)
 							continue;
 
-						cubeClone2 = cubeClone1.clone();
-						doAlgorithm(cubeClone2, algorithm);
+						cubeClone2.copyFrom(cubeClone1);
+						cubeClone2.doAlgorithm(algorithm);
 
-						if (isCorrectCross(cubeClone2) && BrickStateChecker.isCrossBrick(cubeClone2, Brick.Color.BLUE)) {
-							doAlgorithm(cubeClone1, algorithm);
+						if (isCorrectCross(cubeClone2) && BrickStateChecker.isCrossBrick(cubeClone2, NewCube.Color.BLUE)) {
+							cubeClone1.doAlgorithm(algorithm);
 							algorithmBuffer.addAll(Arrays.asList(algorithm));
 							notFound = false;
 							break;
@@ -278,11 +278,11 @@ public class Solver {
 			notFound = true;
 			for (String[] algorithm : iniMapping.get("cross")) {
 
-				cubeClone2 = cubeClone1.clone();
-				doAlgorithm(cubeClone2, algorithm);
+				cubeClone2.copyFrom(cubeClone1);
+				cubeClone2.doAlgorithm(algorithm);
 
 				if (isCorrectCross(cubeClone2) && BrickStateChecker.isCrossRightOriented(cubeClone2)) {
-					doAlgorithm(cubeClone1, algorithm);
+					cubeClone1.doAlgorithm(algorithm);
 					algorithmBuffer.addAll(Arrays.asList(algorithm));
 					notFound = false;
 					break;
@@ -391,26 +391,26 @@ public class Solver {
 
 		boolean found = false;
 
-		cubeClone2 = cubeClone1.clone();
-		doAlgorithm(cubeClone2, y);
+		cubeClone2.copyFrom(cubeClone1);
+		cubeClone2.doAlgorithm(y);
 
 		if (!BrickStateChecker.isRightAngleF2L(cubeClone2)) {
 
 			int countRightF2L = BrickStateChecker.countRightAnglesF2L(cubeClone2);
 
-			doAlgorithm(cubeClone2, f2l_help);
-			doAlgorithm(cubeClone2, u);
-			doAlgorithm(cubeClone2, algorithm);
+			cubeClone2.doAlgorithm(f2l_help);
+			cubeClone2.doAlgorithm(u);
+			cubeClone2.doAlgorithm(algorithm);
 
 			if (BrickStateChecker.countRightAnglesF2L(cubeClone2) > countRightF2L) {
 
-				if (doAlgorithm(cubeClone1, y))
+				if (cubeClone1.doAlgorithm(y))
 					algorithmBuffer.addAll(Arrays.asList(y));
-				if (doAlgorithm(cubeClone1, f2l_help))
+				if (cubeClone1.doAlgorithm(f2l_help))
 					algorithmBuffer.addAll(Arrays.asList(f2l_help));
-				if (doAlgorithm(cubeClone1, u))
+				if (cubeClone1.doAlgorithm(u))
 					algorithmBuffer.addAll(Arrays.asList(u));
-				doAlgorithm(cubeClone1, algorithm);
+				cubeClone1.doAlgorithm(algorithm);
 				algorithmBuffer.addAll(Arrays.asList(algorithm));
 
 				found = true;
@@ -426,7 +426,7 @@ public class Solver {
 	private List<String> oll() throws CannotSolveException {
 		algorithmBuffer.clear();
 
-		if (!cubeController.sideCompleted(cubeClone1.getSideUp())) {
+		if (!cubeClone1.isSideCompleted(cubeClone1.sideUp)) {
 
 			boolean found = false;
 
@@ -470,17 +470,17 @@ public class Solver {
 
 		boolean found = false;
 
-		cubeClone2 = cubeClone1.clone();
+		cubeClone2.copyFrom(cubeClone1);
 
-		doAlgorithm(cubeClone2, u);
-		doAlgorithm(cubeClone2, algorithm);
+		cubeClone2.doAlgorithm(u);
+		cubeClone2.doAlgorithm(algorithm);
 		baseOrientation(cubeClone2);
 
-		if (cubeController.sideCompleted(cubeClone2.getSideUp())) {
+		if (cubeClone2.isSideCompleted(cubeClone2.sideUp)) {
 
-			if (doAlgorithm(cubeClone1, u))
+			if (cubeClone1.doAlgorithm(u))
 				algorithmBuffer.addAll(Arrays.asList(u));
-			doAlgorithm(cubeClone1, algorithm);
+			cubeClone1.doAlgorithm(algorithm);
 			algorithmBuffer.addAll(Arrays.asList(algorithm));
 			algorithmBuffer.addAll(baseOrientation(cubeClone1));
 
@@ -496,7 +496,7 @@ public class Solver {
 	private List<String> pll() throws CannotSolveException {
 		algorithmBuffer.clear();
 
-		if (!cubeCompleted(cubeClone1)) {
+		if (!cubeClone1.isCubeCompleted()) {
 
 			boolean found = false;
 
@@ -550,21 +550,21 @@ public class Solver {
 				u_end = null;
 			}
 
-			cubeClone2 = cubeClone1.clone();
+			cubeClone2.copyFrom(cubeClone1);
 
-			doAlgorithm(cubeClone2, u);
-			doAlgorithm(cubeClone2, algorithm);
+			cubeClone2.doAlgorithm(u);
+			cubeClone2.doAlgorithm(algorithm);
 			baseOrientation(cubeClone2);
-			doAlgorithm(cubeClone2, u_end);
+			cubeClone2.doAlgorithm(u_end);
 
-			if (cubeCompleted(cubeClone2)) {
+			if (cubeClone2.isCubeCompleted()) {
 
-				if (doAlgorithm(cubeClone1, u))
+				if (cubeClone1.doAlgorithm(u))
 					algorithmBuffer.addAll(Arrays.asList(u));
-				if (doAlgorithm(cubeClone1, algorithm))
+				if (cubeClone1.doAlgorithm(algorithm))
 					algorithmBuffer.addAll(Arrays.asList(algorithm));
 				algorithmBuffer.addAll(baseOrientation(cubeClone1));
-				if (doAlgorithm(cubeClone1, u_end))
+				if (cubeClone1.doAlgorithm(u_end))
 					algorithmBuffer.addAll(Arrays.asList(u_end));
 
 				found = true;
@@ -576,33 +576,8 @@ public class Solver {
 		return found;
 	}
 
-	private boolean doAlgorithm(Cube cube, List<String> algorithmList) {
-		cubeController.setCube(cube);
-		return cubeController.doAlgorithm(algorithmList);
-	}
-
-	private boolean doAlgorithm(Cube cube, String[] algorithmArray) {
-		cubeController.setCube(cube);
-		return cubeController.doAlgorithm(algorithmArray);
-	}
-
-	private boolean doAlgorithm(Cube cube, String rotation) {
-		cubeController.setCube(cube);
-		return cubeController.doAlgorithm(rotation);
-	}
-
 	public static Solver getNewInstance(Cube cube) {
-		return new Solver(cube);
-	}
-
-	public boolean cubeCompleted(Cube cube) {
-		cubeController.setCube(cube);
-		try {
-			return cubeController.cubeCompleted();
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-			return false;
-		}
+		return new Solver(NewCube.getNewEmptyInstance().copyFrom(cube));
 	}
 
 }

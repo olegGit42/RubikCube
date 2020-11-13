@@ -55,20 +55,21 @@ public class CubeJSON {
 		}
 	}
 
-	private void readCube(Cube cube) {
+	public CubeJSON readCube(Cube cube) {
 		sideUp = cube.getSideUp().getSideColors();
 		sideDown = cube.getSideDown().getSideColors();
 		sideLeft = cube.getSideLeft().getSideColors();
 		sideRight = cube.getSideRight().getSideColors();
 		sideFront = cube.getSideFront().getSideColors();
 		sideBack = cube.getSideBack().getSideColors();
+
+		return this;
 	}
 
 	private String readJSONFromFile(File jsonFile) throws ReadCubeException {
 		try {
 			return jsonMapper.writeValueAsString(jsonMapper.readValue(jsonFile, CubeJSON.class));
 		} catch (IOException e) {
-			e.printStackTrace();
 			throw new ReadCubeException();
 		}
 	}
@@ -85,7 +86,6 @@ public class CubeJSON {
 			sideBack = cubeJSON.getSideBack();
 
 		} catch (IOException e) {
-			e.printStackTrace();
 			throw new ReadCubeException();
 		}
 	}

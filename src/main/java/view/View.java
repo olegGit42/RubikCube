@@ -24,6 +24,7 @@ import cube.Brick;
 import cube.Cube;
 import cube.CubeController;
 import cube.CubeJSON;
+import cube.NewCube;
 import cube.ReadCubeException;
 import cube.Rotate;
 import cube.Side;
@@ -36,7 +37,8 @@ public class View extends JFrame {
 	public static CubeController cubeController = RubickMain.appContext.getBean("cubeController", CubeController.class);
 	public static Cube cube = cubeController.getCube();
 	public static Map<Brick.Color, Color> colorMapping;
-	public static Map<Integer, Rotate> rotateMapping;
+	public static final NewCube newCube;
+	public static final Map<Integer, Rotate> rotateMapping;
 
 	private Brick.Color brickColorTemplate = null;
 
@@ -159,31 +161,33 @@ public class View extends JFrame {
 		colorMapping.put(Brick.Color.ORANGE, Color.ORANGE);
 		colorMapping.put(Brick.Color.YELLOW, Color.YELLOW);
 
+		newCube = NewCube.getNewEmptyInstance();
+
 		rotateMapping = new HashMap<>();
-		rotateMapping.put(1, cubeController::R);
-		rotateMapping.put(2, cubeController::L);
-		rotateMapping.put(3, cubeController::U);
-		rotateMapping.put(4, cubeController::D);
-		rotateMapping.put(5, cubeController::F);
-		rotateMapping.put(6, cubeController::B);
-		rotateMapping.put(7, cubeController::Rr);
-		rotateMapping.put(8, cubeController::Lr);
-		rotateMapping.put(9, cubeController::Ur);
-		rotateMapping.put(10, cubeController::Dr);
-		rotateMapping.put(11, cubeController::Fr);
-		rotateMapping.put(12, cubeController::Br);
-		rotateMapping.put(13, cubeController::M);
-		rotateMapping.put(14, cubeController::S);
-		rotateMapping.put(15, cubeController::E);
-		rotateMapping.put(13, cubeController::Mr);
-		rotateMapping.put(14, cubeController::Sr);
-		rotateMapping.put(15, cubeController::Er);
-		rotateMapping.put(16, cubeController::R2);
-		rotateMapping.put(17, cubeController::L2);
-		rotateMapping.put(18, cubeController::U2);
-		rotateMapping.put(19, cubeController::D2);
-		rotateMapping.put(20, cubeController::F2);
-		rotateMapping.put(21, cubeController::B2);
+		rotateMapping.put(1, newCube::R);
+		rotateMapping.put(2, newCube::L);
+		rotateMapping.put(3, newCube::U);
+		rotateMapping.put(4, newCube::D);
+		rotateMapping.put(5, newCube::F);
+		rotateMapping.put(6, newCube::B);
+		rotateMapping.put(7, newCube::Rr);
+		rotateMapping.put(8, newCube::Lr);
+		rotateMapping.put(9, newCube::Ur);
+		rotateMapping.put(10, newCube::Dr);
+		rotateMapping.put(11, newCube::Fr);
+		rotateMapping.put(12, newCube::Br);
+		rotateMapping.put(13, newCube::M);
+		rotateMapping.put(14, newCube::S);
+		rotateMapping.put(15, newCube::E);
+		rotateMapping.put(13, newCube::Mr);
+		rotateMapping.put(14, newCube::Sr);
+		rotateMapping.put(15, newCube::Er);
+		rotateMapping.put(16, newCube::R2);
+		rotateMapping.put(17, newCube::L2);
+		rotateMapping.put(18, newCube::U2);
+		rotateMapping.put(19, newCube::D2);
+		rotateMapping.put(20, newCube::F2);
+		rotateMapping.put(21, newCube::B2);
 	}
 
 	/**
@@ -192,7 +196,7 @@ public class View extends JFrame {
 	public View() {
 		setTitle("Rubik");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 950, 492);
+		setBounds(100, 100, 950, 510);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -1532,7 +1536,7 @@ public class View extends JFrame {
 
 		JScrollPane solvingAlgorithmScrollPane = new JScrollPane(solvingAlgorithm);
 		solvingAlgorithmScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		solvingAlgorithmScrollPane.setBounds(15, 380, 909, 70);
+		solvingAlgorithmScrollPane.setBounds(15, 380, 909, 88);
 
 		contentPane.add(solvingAlgorithmScrollPane);
 
@@ -1666,10 +1670,15 @@ public class View extends JFrame {
 
 	// TODO completeCube()
 	public void completeCube() {
+		long start = System.currentTimeMillis();
 		cubeController.completeCube();
 		solvingAlgorithm.setText(cubeController.showSolvingAlgorithm());
-		notification.setText(cubeController.getSolvingAlgorithm().isEmpty() ? ""
-				: cubeController.getSolvingAlgorithm().get(cubeController.getNextMoveIndex()));
+
+		@SuppressWarnings("unused")
+		String duration = false ? "Duration: " + String.valueOf((System.currentTimeMillis() - start) / 1000) + " sec\n" : "";
+
+		notification.setText(duration + (cubeController.getSolvingAlgorithm().isEmpty() ? ""
+				: cubeController.getSolvingAlgorithm().get(cubeController.getNextMoveIndex())));
 		showCubeView();
 	}
 
@@ -1685,15 +1694,17 @@ public class View extends JFrame {
 
 			System.out.println("Solved");
 
-		} catch (IllegalArgumentException | IllegalAccessException e) {
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void scramble() {
-		for (int i = 0; i < (100 + (int) (Math.random() * 50)); i++) {
+		newCube.copyFrom(cube);
+		for (int i = 0; i < (1000 + (int) (Math.random() * 1000)); i++) {
 			rotateMapping.get(1 + (int) (Math.random() * 21)).rotate();
 		}
+		newCube.copyTo(cube);
 		showCubeView();
 	}
 
