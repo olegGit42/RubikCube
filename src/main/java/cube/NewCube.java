@@ -191,8 +191,8 @@ public final class NewCube implements Cloneable {
 		NewCube cube = getNewEmptyInstance();
 
 		for (int i = 0; i < cube.sideUp.length; i++) {
-			cube.sideUp[i] = 0;
-			cube.sideDown[i] = 1;
+			cube.sideDown[i] = 0;
+			cube.sideUp[i] = 1;
 			cube.sideRight[i] = 2;
 			cube.sideLeft[i] = 3;
 			cube.sideFront[i] = 4;
@@ -469,7 +469,7 @@ public final class NewCube implements Cloneable {
 	}
 
 	public enum Color {
-		YELLOW, WHITE, GREEN, BLUE, RED, ORANGE
+		WHITE, YELLOW, GREEN, BLUE, RED, ORANGE
 	}
 
 	private final static class Store {
