@@ -41,6 +41,7 @@ public class Solver {
 			iniMapping.put("oll", getIniSection("oll"));
 			iniMapping.put("pll", getIniSection("pll"));
 			iniMapping.put("pll_end", getIniSection("pll_end"));
+			iniMapping.put("compressor", getIniSection("compressor", "\\|"));
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -48,12 +49,24 @@ public class Solver {
 	}
 
 	private List<String[]> getIniSection(String group) {
+		return getIniSection(group, " ");
+	}
+
+	private List<String[]> getIniSection(String group, String splitter) {
 		Section section = ini.get(group);
 
 		List<String[]> list = new ArrayList<>();
 
 		for (String index : section.keySet()) {
-			list.add(section.get(index).split(" "));
+			if (splitter.equals("\\|")) {
+
+				String[] compressor = section.get(index).split(splitter);
+				compressor[1] = compressor[1].replace("0", "");
+
+				list.add(compressor);
+			} else {
+				list.add(section.get(index).split(splitter));
+			}
 		}
 
 		return list;
@@ -73,6 +86,7 @@ public class Solver {
 				BrickStateChecker.rotateColorMapping();
 
 				List<String> solvingAlgorithmTemp = solve2();
+				solvingAlgorithmTemp = compress(solvingAlgorithmTemp);
 
 				int bufferCount2 = 0;
 
@@ -109,6 +123,35 @@ public class Solver {
 		solvingAlgorithm.addAll(pll());
 
 		return solvingAlgorithm;
+	}
+
+	// TODO compress
+	public List<String> compress(List<String> alrorithm) {
+
+		if (!(alrorithm.isEmpty() || alrorithm.size() == 1)) {
+			String alg = "";
+			for (String move : alrorithm) {
+				alg += " " + move;
+			}
+
+			int lenPrev = 10000;
+			alg = alg.trim();
+
+			while (alg.length() < lenPrev) {
+				lenPrev = alg.length();
+
+				alg = alg + " ";
+				for (String[] compressor : iniMapping.get("compressor")) {
+					alg = alg.replaceAll(compressor[0], compressor[1] + " ");
+					alg = alg.replaceAll("\\s+", " ");
+				}
+				alg = alg.trim();
+			}
+
+			return Arrays.asList(alg.split(" "));
+		}
+
+		return alrorithm;
 	}
 
 	/**
