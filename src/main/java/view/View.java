@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -7,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,11 +16,16 @@ import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+
+import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamPanel;
 
 import cube.Brick;
 import cube.Cube;
@@ -151,6 +158,15 @@ public class View extends JFrame {
 	private JButton btnFw2;
 	private JButton btnBw2;
 	private JButton btnScramble;
+
+	private Webcam webcam;
+	private WebcamPanel webcamPanel;
+	private JButton btnPhotoB;
+	private JButton btnPhotoF;
+	private JButton btnPhotoU;
+	private JButton btnPhotoD;
+	private JButton btnPhotoR;
+	private JButton btnPhotoL;
 
 	static {
 		colorMapping = new HashMap<>();
@@ -304,6 +320,107 @@ public class View extends JFrame {
 		sideU.setBounds(141, 5, 120, 120);
 		sideU.setBorder(new LineBorder(new Color(0, 0, 0)));
 		sideU.setLayout(new GridLayout(0, 3, 2, 2));
+
+		// TODO webcam
+		try {
+			webcam = Webcam.getDefault();
+			// webcam.setViewSize(WebcamResolution.VGA.getSize());
+
+			webcamPanel = new WebcamPanel(webcam, false);
+			webcamPanel.setMirrored(false);
+			webcamPanel.setBounds(393, 5, 120, 120);
+			webcamPanel.setBorder(new LineBorder(new Color(0, 0, 0)));
+			webcamPanel.setLayout(new GridLayout(0, 3, 2, 2));
+		} catch (Exception e) {
+			webcam = null;
+			webcamPanel = null;
+		}
+
+		JToggleButton webcamToggleButton = new JToggleButton();
+		webcamToggleButton.setMargin(new Insets(0, 0, 0, 0));
+		webcamToggleButton.setBounds(15, 5, 80, 40);
+
+		webcamToggleButton.setLayout(new BorderLayout());
+		JLabel lblWebcamName = new JLabel("Webcam", JLabel.CENTER);
+		JLabel lblWebcamActive = new JLabel("OFF", JLabel.CENTER);
+		webcamToggleButton.add(BorderLayout.NORTH, lblWebcamName);
+		webcamToggleButton.add(BorderLayout.SOUTH, lblWebcamActive);
+
+		webcamToggleButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if (webcamToggleButton.isSelected()) {
+						webcam.open();
+						webcamPanel.start();
+						lblWebcamActive.setText("ON");
+						setVisibleWebcamControls(true);
+					} else {
+						webcam.close();
+						lblWebcamActive.setText("OFF");
+						setVisibleWebcamControls(false);
+					}
+				} catch (Exception e2) {
+					lblWebcamActive.setText("OFF");
+					setVisibleWebcamControls(false);
+				}
+			}
+		});
+
+		btnPhotoB = new JButton("B");
+		btnPhotoB.setMargin(new Insets(0, 0, 0, 0));
+		btnPhotoB.setBounds(473, 257, 40, 23);
+		btnPhotoB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				changeSideColorsFromWebcam(cube.getSideBack());
+			}
+		});
+
+		btnPhotoF = new JButton("F");
+		btnPhotoF.setMargin(new Insets(0, 0, 0, 0));
+		btnPhotoF.setBounds(267, 102, 40, 23);
+		btnPhotoF.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				changeSideColorsFromWebcam(cube.getSideFront());
+			}
+		});
+
+		btnPhotoU = new JButton("U");
+		btnPhotoU.setMargin(new Insets(0, 0, 0, 0));
+		btnPhotoU.setBounds(267, 5, 40, 23);
+		btnPhotoU.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				changeSideColorsFromWebcam(cube.getSideUp());
+			}
+		});
+
+		btnPhotoD = new JButton("D");
+		btnPhotoD.setMargin(new Insets(0, 0, 0, 0));
+		btnPhotoD.setBounds(95, 354, 40, 23);
+		btnPhotoD.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				changeSideColorsFromWebcam(cube.getSideDown());
+			}
+		});
+
+		btnPhotoR = new JButton("R");
+		btnPhotoR.setMargin(new Insets(0, 0, 0, 0));
+		btnPhotoR.setBounds(347, 257, 40, 23);
+		btnPhotoR.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				changeSideColorsFromWebcam(cube.getSideRight());
+			}
+		});
+
+		btnPhotoL = new JButton("L");
+		btnPhotoL.setMargin(new Insets(0, 0, 0, 0));
+		btnPhotoL.setBounds(15, 102, 40, 23);
+		btnPhotoL.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				changeSideColorsFromWebcam(cube.getSideLeft());
+			}
+		});
+
+		setVisibleWebcamControls(false);
 
 		brickU1 = new JPanel();
 		brickU1.setBackground(Color.ORANGE);
@@ -919,6 +1036,17 @@ public class View extends JFrame {
 		});
 
 		contentPane.setLayout(null);
+		try {
+			contentPane.add(webcamPanel);
+		} catch (Exception e) {
+		}
+		contentPane.add(webcamToggleButton);
+		contentPane.add(btnPhotoB);
+		contentPane.add(btnPhotoF);
+		contentPane.add(btnPhotoU);
+		contentPane.add(btnPhotoD);
+		contentPane.add(btnPhotoR);
+		contentPane.add(btnPhotoL);
 		contentPane.add(sideU);
 		contentPane.add(sideD);
 		contentPane.add(sideL);
@@ -1552,6 +1680,115 @@ public class View extends JFrame {
 		cubeController.resetCube();
 
 		showCubeView();
+	}
+
+	// TODO Color recognizing
+	public void changeSideColorsFromWebcam(Side side) {
+		if (webcam != null && webcam.isOpen()) {
+			side.changeSideColors(getWebcamColors());
+			showCubeView();
+		} else {
+			notification.setText("Webcam is OFF");
+		}
+	}
+
+	public Brick.Color[] getWebcamColors() {
+		Brick.Color[] brickColors = new Brick.Color[9];
+
+		BufferedImage image = webcam.getImage();
+
+		int delta = Math.abs(image.getWidth() - image.getHeight());
+		int x = 0;
+		int y = 0;
+		int step = 0;
+
+		if (image.getWidth() > image.getHeight()) {
+			x = delta;
+			step = image.getHeight() / 4;
+		} else {
+			y = delta;
+			step = image.getWidth() / 4;
+		}
+
+		Color[][] colors = loadPixelsFromImage(image);
+
+		brickColors[0] = recognizeColor(colors[x + step][y + step]);
+		brickColors[1] = recognizeColor(colors[x + step * 2][y + step]);
+		brickColors[2] = recognizeColor(colors[x + step * 3][y + step]);
+		brickColors[3] = recognizeColor(colors[x + step][y + step * 2]);
+		brickColors[4] = recognizeColor(colors[x + step * 2][y + step * 2]);
+		brickColors[5] = recognizeColor(colors[x + step * 3][y + step * 2]);
+		brickColors[6] = recognizeColor(colors[x + step][y + step * 3]);
+		brickColors[7] = recognizeColor(colors[x + step * 2][y + step * 3]);
+		brickColors[8] = recognizeColor(colors[x + step * 3][y + step * 3]);
+
+		return brickColors;
+	}
+
+	public static Color[][] loadPixelsFromImage(BufferedImage image) {
+
+		Color[][] colors = new Color[image.getWidth()][image.getHeight()];
+
+		for (int x = 0; x < image.getWidth(); x++) {
+			for (int y = 0; y < image.getHeight(); y++) {
+				colors[x][y] = new Color(image.getRGB(x, y));
+			}
+		}
+
+		return colors;
+	}
+
+	public static Brick.Color recognizeColor(Color color) {
+
+		float hsb[] = new float[3];
+		int r = (color.getRGB() >> 16) & 0xFF;
+		int g = (color.getRGB() >> 8) & 0xFF;
+		int b = (color.getRGB()) & 0xFF;
+		Color.RGBtoHSB(r, g, b, hsb);
+
+		if (hsb[1] < 0.1 && hsb[2] > 0.9)
+			return Brick.Color.WHITE;
+		else if (hsb[2] < 0.1)
+			return Brick.Color.RED;
+		else {
+			float deg = hsb[0] * 360;
+			if (deg >= 0 && deg < 10)
+				return Brick.Color.RED;
+			else if (deg >= 10 && deg < 62)
+				return Brick.Color.ORANGE;
+			else if (deg >= 62 && deg < 120)
+				return Brick.Color.YELLOW;
+			else if (deg >= 120 && deg < 165)
+				return Brick.Color.GREEN;
+			else if (deg >= 165 && deg < 210)
+				return Brick.Color.WHITE;
+			else if (deg >= 210 && deg < 270)
+				return Brick.Color.BLUE;
+			else
+				return Brick.Color.RED;
+		}
+
+		/*
+		 * if (hsb[1] < 0.1 && hsb[2] > 0.9) nearlyWhite(); else if (hsb[2] < 0.1)
+		 * nearlyBlack(); else { float deg = hsb[0]*360; if (deg >= 0 && deg < 30)
+		 * red(); else if (deg >= 30 && deg < 90) yellow(); else if (deg >= 90 && deg <
+		 * 150) green(); else if (deg >= 150 && deg < 210) cyan(); else if (deg >= 210
+		 * && deg < 270) blue(); else if (deg >= 270 && deg < 330) magenta(); else
+		 * red(); }
+		 */
+	}
+
+	public void setVisibleWebcamControls(boolean isVisible) {
+		try {
+			webcamPanel.setVisible(isVisible);
+		} catch (Exception e) {
+		}
+		btnPhotoB.setVisible(isVisible);
+		btnPhotoF.setVisible(isVisible);
+		btnPhotoU.setVisible(isVisible);
+		btnPhotoD.setVisible(isVisible);
+		btnPhotoR.setVisible(isVisible);
+		btnPhotoL.setVisible(isVisible);
 	}
 
 	public void colorChange(Side side, int brickIndex) {
